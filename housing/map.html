@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BengaluruNest — Find Your Ideal Home</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0f13;
+      --surface: #16181f;
+      --surface2: #1e2028;
+      --border: #2a2d38;
+      --accent: #e8a045;
+      --accent2: #5b8dee;
+      --text: #e8e6df;
+      --muted: #8a8880;
+      --green: #4caf7d;
+      --red: #e05c5c;
+      --orange: #f0843a;
+      --card-r: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    .sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .api-status {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+
+    .status-dot.live {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .status-dot.warn {
+      background: var(--orange);
+    }
+
+    .status-dot.err {
+      background: var(--red);
+    }
+
+    .status-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .app {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 61px);
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 400px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar-inner {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    select,
+    input[type=text] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 9px 12px;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%238a8880' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .api-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .api-row input {
+      flex: 1;
+      font-size: 12px;
+      padding: 7px 10px;
+    }
+
+    .api-save-btn {
+      padding: 7px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .api-save-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .api-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .api-hint a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
+
+    .api-hint a:hover {
+      text-decoration: underline;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .range-row input[type=range] {
+      flex: 1;
+      accent-color: var(--accent);
+    }
+
+    .range-val {
+      font-size: 12px;
+      color: var(--accent);
+      min-width: 60px;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--surface2);
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #000;
+    }
+
+    .chip:hover:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .health-chip {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all .15s;
+      background: var(--surface2);
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .health-chip.active {
+      background: #e05c5c22;
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .health-chip:hover:not(.active) {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .search-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      color: #000;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+
+    .search-btn:hover {
+      opacity: .88;
+    }
+
+    .search-btn:active {
+      opacity: .75;
+      transform: scale(.99);
+    }
+
+    .search-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    /* AQI city panel */
+    .aqi-tile {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .aqi-main-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .aqi-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .aqi-info .aqi-val {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'DM Serif Display', serif;
+    }
+
+    .aqi-info .aqi-cat {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .aqi-gauge-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #4caf7d, #e8c84a, #f0843a, #e05c5c, #9b5de5, #7d2e2e);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .aqi-gauge-needle {
+      position: absolute;
+      top: -3px;
+      width: 2px;
+      height: 12px;
+      background: #fff;
+      border-radius: 1px;
+      transform: translateX(-50%);
+    }
+
+    .city-poll-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .city-poll-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 10px;
+    }
+
+    .city-poll-cell .cp-name {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: .5px;
+    }
+
+    .city-poll-cell .cp-val {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .city-poll-cell .cp-bar-track {
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      margin-top: 4px;
+    }
+
+    .city-poll-cell .cp-bar-fill {
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    .city-poll-cell .cp-who {
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .cp-ok .cp-val {
+      color: var(--green);
+    }
+
+    .cp-warn .cp-val {
+      color: var(--orange);
+    }
+
+    .cp-warn {
+      border-color: #f0843a44 !important;
+    }
+
+    .cp-danger .cp-val {
+      color: var(--red);
+    }
+
+    .cp-danger {
+      border-color: #e05c5c44 !important;
+    }
+
+    .aqi-suggestion-box {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .aqs-good {
+      background: #4caf7d11;
+      border: 1px solid #4caf7d33;
+      color: var(--green);
+    }
+
+    .aqs-moderate {
+      background: #e8c84a11;
+      border: 1px solid #e8c84a44;
+      color: #e8c84a;
+    }
+
+    .aqs-sensitive {
+      background: #f0843a11;
+      border: 1px solid #f0843a33;
+      color: var(--orange);
+    }
+
+    .aqs-unhealthy {
+      background: #e05c5c11;
+      border: 1px solid #e05c5c33;
+      color: var(--red);
+    }
+
+    .aqs-hazardous {
+      background: #7d2e2e22;
+      border: 1px solid #7d2e2e55;
+      color: #e05c5c;
+    }
+
+    .aqs-label {
+      display: block;
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin-bottom: 3px;
+    }
+
+    /* Results */
+    .results-panel {
+      padding: 0 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0 6px;
+      border-top: 1px solid var(--border);
+    }
+
+    .results-count {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .results-count span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* House card */
+    .house-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--card-r);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color .15s, transform .1s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .house-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-1px);
+    }
+
+    .house-card.top1 {
+      border-color: var(--accent);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-loc {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .card-rank {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    .rank-1 {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .rank-2,
+    .rank-3 {
+      background: var(--surface);
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+    }
+
+    .rank-other {
+      background: var(--surface);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .card-price {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--accent);
+    }
+
+    .card-price span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .meta-item strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .dist-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #5b8dee22;
+      color: var(--accent2);
+      border: 1px solid #5b8dee44;
+    }
+
+    .soc-name {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Inline AQI badge on card */
+    .aqi-inline-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid;
+    }
+
+    /* Pollutant levels inside card */
+    .env-section {
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .env-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .env-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .poll-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .poll-row {
+      display: grid;
+      grid-template-columns: 44px 1fr 62px;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .poll-row-name {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .poll-row-bar-track {
+      height: 5px;
+      border-radius: 3px;
+      background: var(--border);
+      position: relative;
+    }
+
+    .poll-row-bar-fill {
+      height: 5px;
+      border-radius: 3px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .poll-row-safe-tick {
+      position: absolute;
+      top: -3px;
+      bottom: -3px;
+      width: 2px;
+      border-radius: 1px;
+      background: rgba(255, 255, 255, .2);
+    }
+
+    .poll-row-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .poll-row-val {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .poll-row-limit {
+      font-size: 9px;
+      color: var(--muted);
+    }
+
+    /* states */
+    .pr-ok .poll-row-name {
+      color: var(--muted);
+    }
+
+    .pr-ok .poll-row-val {
+      color: var(--green);
+    }
+
+    .pr-ok .poll-row-bar-fill {
+      background: var(--green);
+    }
+
+    .pr-warn .poll-row-name {
+      color: var(--orange);
+    }
+
+    .pr-warn .poll-row-val {
+      color: var(--orange);
+    }
+
+    .pr-warn .poll-row-bar-fill {
+      background: var(--orange);
+    }
+
+    .pr-danger .poll-row-name {
+      color: var(--red);
+    }
+
+    .pr-danger .poll-row-val {
+      color: var(--red);
+    }
+
+    .pr-danger .poll-row-bar-fill {
+      background: var(--red);
+    }
+
+    /* triggered (matches health condition) */
+    .pr-triggered .poll-row-name::after {
+      content: " ●";
+      font-size: 7px;
+      vertical-align: super;
+      color: var(--orange);
+    }
+
+    /* Water + health tags */
+    .water-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .water-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .health-tag {
+      font-size: 10px;
+      padding: 6px 9px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+
+    .ht-air {
+      background: #f0843a0e;
+      border: 1px solid #f0843a33;
+      color: #c86820;
+    }
+
+    .ht-water {
+      background: #5b8dee0e;
+      border: 1px solid #5b8dee33;
+      color: #4272c4;
+    }
+
+    .ht-safe {
+      background: #4caf7d0e;
+      border: 1px solid #4caf7d33;
+      color: #2e8a56;
+    }
+
+    .ht-label {
+      font-weight: 700;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    #map {
+      flex: 1;
+      z-index: 0;
+    }
+
+    .leaflet-container {
+      background: #0e0f13 !important;
+    }
+
+    .empty-state {
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state .big {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 -20px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: .6;
+      }
+
+      70% {
+        transform: scale(1.9);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1.9);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div>
+      <div class="logo">BengaluruNest</div>
+      <div class="sub">Smart Housing Finder · Bangalore</div>
+    </div>
+    <div class="api-status">
+      <div class="status-dot" id="air-dot"></div>
+      <span class="status-label" id="air-label">Air API</span>
+      <div class="status-dot live"></div>
+      <span class="status-label">Water (static)</span>
+    </div>
+  </header>
+
+  <div class="app">
+    <div class="sidebar">
+      <div class="sidebar-inner">
+
+        <!-- WAQI KEY -->
+        <div>
+          <div class="section-label">Air Quality API Key (WAQI)</div>
+          <div class="api-row">
+            <input type="text" id="waqi-key" placeholder="Paste your free WAQI token…">
+            <button class="api-save-btn" onclick="saveAndTestKey()">Connect</button>
+          </div>
+          <div class="api-hint">Free token → <a href="https://aqicn.org/data-platform/token/"
+              target="_blank">aqicn.org/data-platform/token</a></div>
+        </div>
+
+        <!-- CITY AQI -->
+        <div id="aqi-panel" style="display:none">
+          <div class="section-label">Live AQI — Bangalore</div>
+          <div class="aqi-tile">
+            <div class="aqi-main-row">
+              <div class="aqi-circle" id="aqi-circle" style="background:#444">—</div>
+              <div class="aqi-info">
+                <div class="aqi-val" id="aqi-val">—</div>
+                <div class="aqi-cat" id="aqi-cat">Loading…</div>
+              </div>
+            </div>
+            <div class="aqi-gauge-bar">
+              <div class="aqi-gauge-needle" id="aqi-needle" style="left:0%"></div>
+            </div>
+            <div class="city-poll-grid" id="city-poll-grid"></div>
+            <div id="aqi-suggestion-box" style="display:none"></div>
+          </div>
+        </div>
+
+        <!-- WORKPLACE -->
+        <div>
+          <div class="section-label">Workplace</div>
+          <div class="field-group">
+            <label>Company / Area</label>
+            <select id="sel-company">
+              <option value="">— Select your workplace —</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- BUDGET -->
+        <div>
+          <div class="section-label">Budget (₹ Lakhs)</div>
+          <div class="field-group">
+            <div class="range-row">
+              <span style="font-size:12px;color:var(--muted)">Min</span>
+              <input type="range" id="price-min" min="8" max="500" value="20" step="5" oninput="syncRange()">
+              <span class="range-val" id="pmin-val">₹20L</span>
+            </div>
+            <div class="range-row">
+              <span style="font-size:12px;color:var(--muted)">Max</span>
+              <input type="range" id="price-max" min="8" max="500" value="150" step="5" oninput="syncRange()">
+              <span class="range-val" id="pmax-val">₹150L</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BHK -->
+        <div>
+          <div class="section-label">BHK Preference</div>
+          <div class="chip-row" id="bhk-chips">
+            <div class="chip active" data-val="1">1 BHK</div>
+            <div class="chip active" data-val="2">2 BHK</div>
+            <div class="chip active" data-val="3">3 BHK</div>
+            <div class="chip" data-val="4">4 BHK</div>
+            <div class="chip" data-val="5">5+ BHK</div>
+          </div>
+        </div>
+
+        <!-- HEALTH -->
+        <div>
+          <div class="section-label">Health Conditions <span
+              style="font-weight:300;font-size:10px;text-transform:none;letter-spacing:0">(avoids risky areas)</span>
+          </div>
+          <div class="chip-row" id="health-chips">
+            <div class="health-chip" data-val="asthma">Asthma</div>
+            <div class="health-chip" data-val="copd">COPD</div>
+            <div class="health-chip" data-val="heart">Heart</div>
+            <div class="health-chip" data-val="respiratory">Respiratory</div>
+            <div class="health-chip" data-val="allergy">Allergy</div>
+            <div class="health-chip" data-val="kidney">Kidney</div>
+            <div class="health-chip" data-val="neurological">Neurological</div>
+            <div class="health-chip" data-val="cancer">Cancer risk</div>
+          </div>
+        </div>
+
+        <button class="search-btn" id="search-btn" onclick="runSearch()">Find Top 5 Homes →</button>
+        <div class="divider"></div>
+
+        <div class="results-panel" id="results-panel">
+          <div class="empty-state">
+            <div class="big">🏡</div>
+            <p>Connect the WAQI API key, select your workplace and health conditions, then click <strong>Find Top 5
+                Homes</strong>.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // ═══════════════════════════════════════════════
+    // CONSTANTS
+    // ═══════════════════════════════════════════════
+    const POLLUTANT_META = {
+      pm25: { warn: 35.4, danger: 55.4, max: 150, unit: "µg/m³", label: "PM2.5", who: "Safe <35.4" },
+      pm10: { warn: 154, danger: 254, max: 400, unit: "µg/m³", label: "PM10", who: "Safe <154" },
+      no2: { warn: 100, danger: 200, max: 300, unit: "µg/m³", label: "NO₂", who: "Safe <100" },
+      so2: { warn: 100, danger: 200, max: 300, unit: "µg/m³", label: "SO₂", who: "Safe <100" },
+      o3: { warn: 140, danger: 180, max: 260, unit: "µg/m³", label: "O₃", who: "Safe <140" },
+      co: { warn: 9.4, danger: 12.4, max: 20, unit: "mg/m³", label: "CO", who: "Safe <9.4" },
+    };
+
+    const AQI_LEVELS = [
+      { max: 50, label: "Good", color: "#4caf7d", cls: "good", suggest: "Air quality is excellent. Safe for all outdoor activities including prolonged exercise." },
+      { max: 100, label: "Moderate", color: "#e8c84a", cls: "moderate", suggest: "Acceptable air quality. Unusually sensitive individuals may notice minor symptoms." },
+      { max: 150, label: "Unhealthy (Sensitive)", color: "#f0843a", cls: "sensitive", suggest: "Sensitive groups (asthma, heart, respiratory) should limit prolonged outdoor exertion. Consider N95 masks outdoors." },
+      { max: 200, label: "Unhealthy", color: "#e05c5c", cls: "unhealthy", suggest: "Everyone may begin to experience adverse health effects. Avoid prolonged outdoor activity. Use air purifier indoors." },
+      { max: 300, label: "Very Unhealthy", color: "#9b5de5", cls: "unhealthy", suggest: "Health alert: Everyone should avoid outdoor activity. Keep windows sealed, run HEPA air purifier." },
+      { max: 500, label: "Hazardous", color: "#7d2e2e", cls: "hazardous", suggest: "Health emergency. Stay indoors at all times. N95 mandatory if outdoor exposure is unavoidable." },
+    ];
+
+    const DISEASE_POLLUTANTS = {
+      asthma: { air: ["pm25", "pm10", "no2", "so2", "o3"], water: [] },
+      copd: { air: ["pm25", "pm10", "no2", "so2"], water: [] },
+      heart: { air: ["pm25", "co", "no2"], water: [] },
+      respiratory: { air: ["pm25", "pm10", "no2", "so2", "o3"], water: [] },
+      allergy: { air: ["pm10", "pm25", "o3", "no2"], water: [] },
+      neurological: { air: ["co"], water: ["lead", "mercury", "fluoride"] },
+      kidney: { air: [], water: ["fluoride", "arsenic", "lead", "cadmium", "chromium", "nitrates"] },
+      cancer: { air: ["pm25"], water: ["arsenic", "chromium", "nitrates"] },
+    };
+
+    const HEALTH_SUGGESTIONS = {
+      asthma: "Carry rescue inhaler. Avoid peak traffic hours (8–10 am, 6–9 pm). HEPA air purifier essential indoors.",
+      copd: "Pulmonologist consult before commute changes. Prefer AC car over two-wheeler. Avoid construction zones.",
+      heart: "PM2.5 exposure raises cardiac event risk. Monitor BP, avoid morning outdoor exercise on high-AQI days.",
+      respiratory: "Use N95/N99 mask when AQI > 100. Steam inhalation may help. Consult ENT for persistent symptoms.",
+      allergy: "Check pollen + AQI daily. Antihistamine as prophylactic on high-AQI days. Keep windows closed.",
+      kidney: "Hydration critical. Avoid areas with borewell water. Prefer RO+UV treated water. Annual kidney function test.",
+      neurological: "Heavy metals in water can impact cognition. Use certified water filter. Avoid areas near e-waste zones.",
+      cancer: "Chronic PM2.5 > 35 µg/m³ significantly raises lung cancer risk. Avoid smoking; use HEPA purifier.",
+    };
+
+    const WATER_RISKS = {
+      "Bellandur": { risk: "HIGH", issues: ["Cyanotoxins", "E.coli", "Turbidity", "TDS"], diseases: ["kidney", "cancer", "neurological", "respiratory"], advice: "Lake contamination is severe. Avoid borewell water entirely. Use BIS-certified RO+UV. Test water quarterly." },
+      "Varthur": { risk: "HIGH", issues: ["Cyanotoxins", "E.coli", "Turbidity", "Nitrates"], diseases: ["kidney", "cancer"], advice: "Adjacent to Varthur Lake. High E.coli risk. Invest in multi-stage filtration. Boil water as backup." },
+      "Sarjapur": { risk: "HIGH", issues: ["Fluoride", "TDS", "Nitrates"], diseases: ["kidney", "neurological"], advice: "Elevated fluoride linked to dental/skeletal fluorosis. Use RO system rated for fluoride removal." },
+      "Kasavanhalli": { risk: "MEDIUM", issues: ["Fluoride", "TDS"], diseases: ["kidney"], advice: "Moderate fluoride levels. Standard RO filter adequate. Annual water quality test recommended." },
+      "Hosa Road": { risk: "MEDIUM", issues: ["E.coli", "Turbidity"], diseases: ["kidney"], advice: "E.coli presence indicates faecal contamination. UV sterilisation essential alongside filtration." },
+      "Chandapura": { risk: "MEDIUM", issues: ["Nitrates", "TDS", "Fluoride"], diseases: ["kidney", "cancer"], advice: "Nitrate levels can affect infants. Pregnant women should use certified bottled water as backup." },
+      "Electronic City": { risk: "MEDIUM", issues: ["TDS", "Fluoride"], diseases: ["kidney"], advice: "TDS above 500 ppm common. RO system recommended. Check BWSSB supply vs borewell source." },
+      "Whitefield": { risk: "MEDIUM", issues: ["TDS", "Hardness"], diseases: ["kidney"], advice: "Hard water can cause kidney stones over time. Water softener + RO combo ideal. Stay well hydrated." },
+      "Bommanahalli": { risk: "MEDIUM", issues: ["E.coli", "Turbidity"], diseases: ["kidney"], advice: "Ageing pipeline infrastructure. Boil+filter as minimum. Consider whole-house sediment pre-filter." },
+      "Hoodi": { risk: "LOW", issues: ["TDS"], diseases: [], advice: "Generally safe. TDS within acceptable range. Basic RO filter adequate for drinking." },
+      "KR Puram": { risk: "LOW", issues: ["TDS", "Turbidity"], diseases: [], advice: "Low risk. Turbidity spikes during monsoon. Use sediment pre-filter during June–September." },
+    };
+
+    function getWaterRisk(loc) {
+      for (const [area, data] of Object.entries(WATER_RISKS)) {
+        if (loc.includes(area)) return data;
+      }
+      return { risk: "LOW", issues: [], diseases: [], advice: "Water quality data unavailable. Use BIS-certified RO as a standard precaution." };
+    }
+
+    function aqiLevel(aqi) { return AQI_LEVELS.find(l => aqi <= l.max) || AQI_LEVELS.at(-1); }
+    function waterColor(risk) { return risk === "HIGH" ? "#e05c5c" : risk === "MEDIUM" ? "#f0843a" : "#4caf7d"; }
+
+    // ═══════════════════════════════════════════════
+    // WAQI API
+    // ═══════════════════════════════════════════════
+    let WAQI_TOKEN = localStorage.getItem("waqi_token") || "";
+    let AREA_AQI_CACHE = {};
+    let CITY_AQI = null;
+
+    if (WAQI_TOKEN) { document.getElementById("waqi-key").value = WAQI_TOKEN; initAirQuality(); }
+
+    function saveAndTestKey() {
+      const key = document.getElementById("waqi-key").value.trim();
+      if (!key) return;
+      WAQI_TOKEN = key;
+      localStorage.setItem("waqi_token", key);
+      initAirQuality();
+    }
+
+    async function initAirQuality() {
+      setAirStatus("loading");
+      try {
+        const res = await fetch(`https://api.waqi.info/feed/bangalore/?token=${WAQI_TOKEN}`);
+        const json = await res.json();
+        if (json.status !== "ok") throw new Error(json.data || "API error");
+        CITY_AQI = parseWaqiData(json.data);
+        renderCityAqi(CITY_AQI);
+        setAirStatus("live");
+        document.getElementById("aqi-panel").style.display = "block";
+      } catch (e) { setAirStatus("error", e.message); }
+    }
+
+    function parseWaqiData(d) {
+      const aqi = d.aqi;
+      const lvl = aqiLevel(aqi);
+      const iaqi = d.iaqi || {};
+      const pollutants = { pm25: iaqi.pm25?.v, pm10: iaqi.pm10?.v, no2: iaqi.no2?.v, so2: iaqi.so2?.v, o3: iaqi.o3?.v, co: iaqi.co?.v };
+      return { aqi, label: lvl.label, color: lvl.color, cls: lvl.cls, suggest: lvl.suggest, pollutants };
+    }
+
+    async function fetchAreaAqi(lat, lng, loc) {
+      if (AREA_AQI_CACHE[loc]) return AREA_AQI_CACHE[loc];
+      if (!WAQI_TOKEN) return CITY_AQI || { aqi: null, label: "No key", color: "#444", cls: "moderate", pollutants: {} };
+      try {
+        const res = await fetch(`https://api.waqi.info/feed/geo:${lat};${lng}/?token=${WAQI_TOKEN}`);
+        const json = await res.json();
+        if (json.status !== "ok") throw new Error();
+        const result = parseWaqiData(json.data);
+        AREA_AQI_CACHE[loc] = result;
+        return result;
+      } catch {
+        return CITY_AQI || { aqi: null, label: "Unavailable", color: "#444", cls: "moderate", pollutants: {} };
+      }
+    }
+
+    function renderCityAqi(d) {
+      document.getElementById("aqi-circle").style.background = d.color;
+      document.getElementById("aqi-circle").textContent = d.aqi;
+      document.getElementById("aqi-val").textContent = `AQI ${d.aqi}`;
+      document.getElementById("aqi-cat").textContent = d.label;
+      document.getElementById("aqi-needle").style.left = Math.min(100, Math.round(d.aqi / 500 * 100)) + "%";
+
+      const grid = document.getElementById("city-poll-grid");
+      grid.innerHTML = "";
+      Object.entries(d.pollutants).forEach(([k, v]) => {
+        if (v == null) return;
+        const m = POLLUTANT_META[k]; if (!m) return;
+        const cls = v >= m.danger ? "cp-danger" : v >= m.warn ? "cp-warn" : "cp-ok";
+        const fillPct = Math.min(100, Math.round(v / m.danger * 80));
+        const fillColor = v >= m.danger ? "#e05c5c" : v >= m.warn ? "#f0843a" : "#4caf7d";
+        const cell = document.createElement("div");
+        cell.className = `city-poll-cell ${cls}`;
+        cell.innerHTML = `<div class="cp-name">${m.label}</div>
+      <div class="cp-val">${v} <span style="font-size:9px;font-weight:400;color:var(--muted)">${m.unit}</span></div>
+      <div class="cp-bar-track"><div class="cp-bar-fill" style="width:${fillPct}%;background:${fillColor};height:3px;border-radius:2px"></div></div>
+      <div class="cp-who">${m.who}</div>`;
+        grid.appendChild(cell);
+      });
+
+      if (d.suggest) {
+        const sb = document.getElementById("aqi-suggestion-box");
+        sb.style.display = "block";
+        sb.className = `aqi-suggestion-box aqs-${d.cls}`;
+        sb.innerHTML = `<span class="aqs-label">${d.label}</span>${d.suggest}`;
+      }
+    }
+
+    function setAirStatus(state, msg = "") {
+      const dot = document.getElementById("air-dot"), lbl = document.getElementById("air-label");
+      if (state === "live") { dot.className = "status-dot live"; lbl.textContent = "Air API ✓"; }
+      if (state === "loading") { dot.className = "status-dot warn"; lbl.textContent = "Connecting…"; }
+      if (state === "error") { dot.className = "status-dot err"; lbl.textContent = "Air API ✗"; console.warn(msg); }
+    }
+
+    // ═══════════════════════════════════════════════
+    // HOUSE DATA
+    // ═══════════════════════════════════════════════
+    let HOUSES = [];
+    Papa.parse("houses_geocoded.csv", {
+      download: true, header: true, dynamicTyping: true,
+      complete(results) {
+        HOUSES = results.data.map((row, i) => ({
+          id: i, loc: String(row.location || "").trim(), bhk: parseInt(row.bhk || 0),
+          sqft: parseFloat(row.total_sqft || 0), bath: parseInt(row.bath || 0),
+          price: parseFloat(row.price || 0), lat: parseFloat(row.lat || row.latitude || 0),
+          lng: parseFloat(row.lng || row.longitude || 0), soc: String(row.society || "").trim(),
+        })).filter(h =>
+          isFinite(h.lat) && isFinite(h.lng) &&
+          h.lat > 12.7 && h.lat < 13.2 && h.lng > 77.3 && h.lng < 77.9 &&
+          h.price > 0 && h.bhk > 0
+        );
+        console.log(`Valid houses: ${HOUSES.length}`);
+      }
+    });
+
+    const COMPANIES = [{ "id": 1, "name": "Infosys", "area": "Electronic City", "lat": 12.8446, "lng": 77.6616 }, { "id": 2, "name": "Wipro", "area": "Sarjapur Road", "lat": 12.901, "lng": 77.6891 }, { "id": 3, "name": "TCS", "area": "Whitefield", "lat": 12.9698, "lng": 77.7499 }, { "id": 4, "name": "HCL Technologies", "area": "Whitefield", "lat": 12.9698, "lng": 77.75 }, { "id": 5, "name": "Accenture", "area": "Hebbal", "lat": 13.0358, "lng": 77.597 }, { "id": 6, "name": "IBM India", "area": "Manyata Tech Park", "lat": 13.0458, "lng": 77.6208 }, { "id": 7, "name": "Cognizant", "area": "Outer Ring Road", "lat": 12.9279, "lng": 77.6271 }, { "id": 8, "name": "Capgemini", "area": "Electronic City", "lat": 12.8352, "lng": 77.6602 }, { "id": 9, "name": "SAP Labs India", "area": "Bellandur", "lat": 12.9343, "lng": 77.6687 }, { "id": 10, "name": "Oracle India", "area": "Whitefield", "lat": 12.9814, "lng": 77.7477 }, { "id": 11, "name": "Microsoft India", "area": "Bellandur", "lat": 12.9339, "lng": 77.6712 }, { "id": 12, "name": "Google India", "area": "Indira Nagar", "lat": 12.9784, "lng": 77.6408 }, { "id": 13, "name": "Amazon India", "area": "Marathahalli", "lat": 12.9591, "lng": 77.6974 }, { "id": 14, "name": "Flipkart", "area": "Bellandur", "lat": 12.9374, "lng": 77.6762 }, { "id": 15, "name": "Swiggy", "area": "Koramangala", "lat": 12.9352, "lng": 77.6245 }, { "id": 16, "name": "Zomato", "area": "HSR Layout", "lat": 12.9081, "lng": 77.6476 }, { "id": 17, "name": "Razorpay", "area": "SG Palya", "lat": 12.9341, "lng": 77.604 }, { "id": 18, "name": "Byju's", "area": "Banashankari", "lat": 12.9241, "lng": 77.554 }, { "id": 19, "name": "PhonePe", "area": "Koramangala", "lat": 12.9352, "lng": 77.6168 }, { "id": 20, "name": "Ola Cabs", "area": "Koramangala", "lat": 12.9377, "lng": 77.6247 }, { "id": 21, "name": "Meesho", "area": "Bangalore CBD", "lat": 12.9716, "lng": 77.5946 }, { "id": 22, "name": "Naukri", "area": "CV Raman Nagar", "lat": 12.9838, "lng": 77.6605 }, { "id": 23, "name": "Unacademy", "area": "Jayanagar", "lat": 12.925, "lng": 77.5938 }, { "id": 24, "name": "CRED", "area": "Domlur", "lat": 12.9608, "lng": 77.6387 }, { "id": 25, "name": "Udaan", "area": "Koramangala", "lat": 12.9342, "lng": 77.618 }, { "id": 26, "name": "Freshworks", "area": "Bellandur", "lat": 12.933, "lng": 77.67 }, { "id": 27, "name": "Zoho", "area": "Sarjapur Road", "lat": 12.9024, "lng": 77.6844 }, { "id": 28, "name": "Mphasis", "area": "Electronic City", "lat": 12.8446, "lng": 77.6616 }, { "id": 29, "name": "LTIMindtree", "area": "Whitefield", "lat": 12.97, "lng": 77.75 }, { "id": 30, "name": "Biocon", "area": "Electronics City", "lat": 12.839, "lng": 77.656 }, { "id": 31, "name": "Navi Technologies", "area": "HSR Layout", "lat": 12.9051, "lng": 77.6468 }, { "id": 32, "name": "InMobi", "area": "Koramangala", "lat": 12.9352, "lng": 77.6245 }, { "id": 33, "name": "Mu Sigma", "area": "Outer Ring Road", "lat": 12.9169, "lng": 77.6101 }, { "id": 34, "name": "GlobalFoundries", "area": "EPIP Zone", "lat": 12.9747, "lng": 77.731 }, { "id": 35, "name": "Texas Instruments", "area": "Bagmane Tech Park", "lat": 12.9833, "lng": 77.638 }, { "id": 36, "name": "Qualcomm India", "area": "Outer Ring Road", "lat": 12.928, "lng": 77.627 }, { "id": 37, "name": "Intel India", "area": "Whitefield", "lat": 12.9698, "lng": 77.7499 }, { "id": 38, "name": "Bosch India", "area": "Adugodi", "lat": 12.9433, "lng": 77.61 }, { "id": 39, "name": "ABB India", "area": "Peenya Industrial Area", "lat": 13.0268, "lng": 77.5164 }, { "id": 40, "name": "HAL", "area": "HAL Airport Area", "lat": 12.9504, "lng": 77.6685 }, { "id": 41, "name": "ISRO", "area": "Antariksh Bhavan", "lat": 12.955, "lng": 77.551 }, { "id": 42, "name": "DRDO CAIR", "area": "CV Raman Nagar", "lat": 12.993, "lng": 77.6546 }, { "id": 43, "name": "Tally Solutions", "area": "Jayanagar", "lat": 12.9255, "lng": 77.5934 }, { "id": 44, "name": "Akamai", "area": "Manyata Tech Park", "lat": 13.0458, "lng": 77.6208 }, { "id": 45, "name": "Mastercard India", "area": "Manyata Tech Park", "lat": 13.0425, "lng": 77.6165 }, { "id": 46, "name": "Walmart Global Tech", "area": "Bellandur", "lat": 12.9334, "lng": 77.6762 }, { "id": 47, "name": "Target India", "area": "Manyata Tech Park", "lat": 13.044, "lng": 77.619 }, { "id": 48, "name": "Goldman Sachs", "area": "Koramangala", "lat": 12.9396, "lng": 77.6126 }, { "id": 49, "name": "JP Morgan", "area": "Outer Ring Road", "lat": 12.927, "lng": 77.626 }, { "id": 50, "name": "PayPal India", "area": "Manyata Tech Park", "lat": 13.0453, "lng": 77.62 }, { "id": 51, "name": "Siemens India", "area": "Domlur", "lat": 12.96, "lng": 77.636 }];
+
+    // ═══════════════════════════════════════════════
+    // MAP
+    // ═══════════════════════════════════════════════
+    const map = L.map("map", { zoomControl: true }).setView([12.9716, 77.5946], 11);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors", className: "map-tiles"
+    }).addTo(map);
+    const ts = document.createElement("style");
+    ts.textContent = ".map-tiles{filter:invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);}";
+    document.head.appendChild(ts);
+
+    let markerLayer = L.layerGroup().addTo(map);
+    let workplaceMarker = null;
+
+    const sel = document.getElementById("sel-company");
+    COMPANIES.sort((a, b) => a.name.localeCompare(b.name)).forEach(c => {
+      const o = document.createElement("option");
+      o.value = c.id; o.textContent = `${c.name} (${c.area})`; sel.appendChild(o);
+    });
+    sel.addEventListener("change", () => {
+      const co = COMPANIES.find(c => c.id == sel.value); if (!co) return;
+      if (workplaceMarker) map.removeLayer(workplaceMarker);
+      workplaceMarker = L.circleMarker([co.lat, co.lng], { radius: 10, color: "#e8a045", fillColor: "#e8a045", fillOpacity: .9, weight: 3 })
+        .addTo(map).bindPopup(`<b>${co.name}</b><br>${co.area}`).openPopup();
+      map.setView([co.lat, co.lng], 12);
+    });
+
+    function syncRange() {
+      const mn = +document.getElementById("price-min").value;
+      const mx = +document.getElementById("price-max").value;
+      if (mn > mx) document.getElementById("price-min").value = mx;
+      document.getElementById("pmin-val").textContent = "₹" + document.getElementById("price-min").value + "L";
+      document.getElementById("pmax-val").textContent = "₹" + mx + "L";
+    }
+
+    document.getElementById("bhk-chips").addEventListener("click", e => { if (e.target.classList.contains("chip")) e.target.classList.toggle("active"); });
+    document.getElementById("health-chips").addEventListener("click", e => { if (e.target.classList.contains("health-chip")) e.target.classList.toggle("active"); });
+
+    // ═══════════════════════════════════════════════
+    // SCORING
+    // ═══════════════════════════════════════════════
+    function haversine(lat1, lng1, lat2, lng2) {
+      const R = 6371, toR = d => d * Math.PI / 180;
+      const dLat = toR(lat2 - lat1), dLng = toR(lng2 - lng1);
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(toR(lat1)) * Math.cos(toR(lat2)) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function assessRisks(house, aqiData, healthConditions) {
+      const airRisks = [], waterRisks = [], triggeredPollutants = {};
+      const lvl = aqiData ? aqiLevel(aqiData.aqi) : null;
+      const airPenalty = lvl ? (lvl.max <= 50 ? 0 : lvl.max <= 100 ? .15 : lvl.max <= 150 ? .35 : lvl.max <= 200 ? .55 : .75) : 0;
+      let waterPenalty = 0;
+      const waterData = getWaterRisk(house.loc);
+
+      if (aqiData && healthConditions.length) {
+        healthConditions.forEach(cond => {
+          const mapping = DISEASE_POLLUTANTS[cond]; if (!mapping) return;
+          mapping.air.forEach(p => {
+            const val = aqiData.pollutants[p], m = POLLUTANT_META[p];
+            if (val != null && m && val >= m.warn) {
+              airRisks.push(`${m.label} (${cond})`);
+              if (!triggeredPollutants[p]) triggeredPollutants[p] = [];
+              triggeredPollutants[p].push(cond);
+            }
+          });
+        });
+      }
+
+      if (waterData.risk !== "LOW" && healthConditions.length) {
+        const overlap = healthConditions.filter(c => waterData.diseases.includes(c));
+        if (overlap.length || waterData.risk === "HIGH") {
+          waterRisks.push(...waterData.issues);
+          waterPenalty = waterData.risk === "HIGH" ? 0.4 : 0.2;
+        }
+      }
+
+      const totalPenalty = Math.min(0.95, airPenalty * 0.6 + waterPenalty * 0.4);
+      return { airRisks: [...new Set(airRisks)], waterRisks: [...new Set(waterRisks)], waterData, aqiData, totalPenalty, triggeredPollutants };
+    }
+
+    function jitterCoords(results) {
+      const STEP = 0.0015, seen = {};
+      return results.map(h => {
+        const key = `${h.lat.toFixed(3)}_${h.lng.toFixed(3)}`;
+        const n = seen[key] = (seen[key] ?? 0) + 1;
+        if (n === 1) return { ...h, jLat: h.lat, jLng: h.lng };
+        const angle = (n - 1) * (2 * Math.PI / 6);
+        return { ...h, jLat: h.lat + STEP * Math.sin(angle), jLng: h.lng + STEP * Math.cos(angle) };
+      });
+    }
+
+    // ═══════════════════════════════════════════════
+    // MAIN SEARCH
+    // ═══════════════════════════════════════════════
+    async function runSearch() {
+      const coId = sel.value;
+      if (!coId) { alert("Please select your workplace first."); return; }
+      const company = COMPANIES.find(c => c.id == +coId);
+      const priceMin = +document.getElementById("price-min").value;
+      const priceMax = +document.getElementById("price-max").value;
+      const activeBhk = [...document.querySelectorAll("#bhk-chips .chip.active")].map(c => +c.dataset.val);
+      const activeHealth = [...document.querySelectorAll("#health-chips .health-chip.active")].map(c => c.dataset.val);
+
+      const btn = document.getElementById("search-btn");
+      btn.disabled = true; btn.innerHTML = 'Analysing areas… <span class="loading"></span>';
+
+      let filtered = HOUSES.filter(h => {
+        if (h.price < priceMin || h.price > priceMax) return false;
+        const bv = h.bhk >= 5 ? 5 : h.bhk;
+        return activeBhk.length === 0 || activeBhk.includes(bv);
+      });
+
+      if (!filtered.length) {
+        showEmpty("No listings match your filters. Try widening the price range or BHK options.");
+        btn.disabled = false; btn.textContent = "Find Top 5 Homes →"; return;
+      }
+
+      const seenBucket = new Set(), candidates = [];
+      const distScored = filtered.map(h => ({
+        ...h, dist: Math.round(haversine(company.lat, company.lng, h.lat, h.lng) * 10) / 10
+      })).sort((a, b) => a.dist - b.dist);
+      for (const h of distScored) {
+        if (candidates.length >= 10) break;
+        const bucket = `${h.lat.toFixed(2)}_${h.lng.toFixed(2)}`;
+        if (!seenBucket.has(bucket)) { seenBucket.add(bucket); candidates.push(h); }
+      }
+
+      const aqiResults = await Promise.all(candidates.map(h => fetchAreaAqi(h.lat, h.lng, h.loc)));
+
+      const scored = candidates.map((h, i) => {
+        const aqiData = aqiResults[i];
+        const risks = assessRisks(h, aqiData, activeHealth);
+        const distScore = 1 / (h.dist + 0.1);
+        const finalScore = distScore * (1 - risks.totalPenalty);
+        return { ...h, aqiData, risks, score: finalScore };
+      }).sort((a, b) => b.score - a.score);
+
+      const top5 = scored.slice(0, 5);
+      renderResults(top5, company, activeHealth);
+      renderMap(top5, company);
+      btn.disabled = false; btn.textContent = "Find Top 5 Homes →";
+    }
+
+    // ═══════════════════════════════════════════════
+    // BUILD POLLUTANT ROWS (the key new section)
+    // ═══════════════════════════════════════════════
+    function buildPollutantRows(pollutants, triggeredPollutants) {
+      if (!pollutants) return '<div style="font-size:11px;color:var(--muted)">No area data — showing city-level AQI</div>';
+      return Object.entries(pollutants).map(([k, v]) => {
+        if (v == null) return "";
+        const m = POLLUTANT_META[k]; if (!m) return "";
+        const isTriggered = !!(triggeredPollutants && triggeredPollutants[k]);
+        const cls = v >= m.danger ? "pr-danger" : v >= m.warn ? "pr-warn" : "pr-ok";
+        const triggeredCls = isTriggered ? " pr-triggered" : "";
+        const fillPct = Math.min(100, (v / m.max) * 100).toFixed(1);
+        const safePct = ((m.warn / m.max) * 100).toFixed(1);
+        const fillColor = v >= m.danger ? "#e05c5c" : v >= m.warn ? "#f0843a" : "#4caf7d";
+        return `<div class="poll-row ${cls}${triggeredCls}">
+      <div class="poll-row-name">${m.label}</div>
+      <div class="poll-row-bar-track">
+        <div class="poll-row-bar-fill" style="width:${fillPct}%;background:${fillColor}"></div>
+        <div class="poll-row-safe-tick" style="left:${safePct}%" title="${m.who}"></div>
+      </div>
+      <div class="poll-row-right">
+        <div class="poll-row-val">${v} <span style="font-size:9px;font-weight:400;color:var(--muted)">${m.unit}</span></div>
+        <div class="poll-row-limit">${m.who}</div>
+      </div>
+    </div>`;
+      }).join("");
+    }
+
+    // ═══════════════════════════════════════════════
+    // RENDER CARDS
+    // ═══════════════════════════════════════════════
+    function renderResults(results, company, activeHealth) {
+      const panel = document.getElementById("results-panel");
+      panel.innerHTML = `<div class="results-header">
+    <div style="font-size:13px;font-weight:600">Top Recommendations</div>
+    <div class="results-count">near <span>${company.name}</span></div>
+  </div>`;
+
+      results.forEach((h, i) => {
+        const rankClass = i === 0 ? "rank-1" : i <= 2 ? "rank-2" : "rank-other";
+        const rankLabel = i === 0 ? "🥇 Best Match" : `#${i + 1}`;
+        const lvl = h.aqiData?.aqi ? aqiLevel(h.aqiData.aqi) : null;
+        const aqiColor = lvl?.color || "#444";
+        const waterData = getWaterRisk(h.loc);
+        const wc = waterColor(waterData.risk);
+
+        // Determine health tag style
+        const { airRisks, waterRisks, triggeredPollutants } = h.risks;
+        const activeAirCondsHit = activeHealth.filter(c =>
+          (DISEASE_POLLUTANTS[c]?.air || []).some(p => triggeredPollutants[p])
+        );
+        const activeWaterCondsHit = activeHealth.filter(c => waterData.diseases.includes(c));
+        const htCls = activeAirCondsHit.length ? "ht-air" : activeWaterCondsHit.length ? "ht-water" : "ht-safe";
+        const htLabel = activeAirCondsHit.length ? "Air risk for your conditions" : activeWaterCondsHit.length ? "Water risk for your conditions" : "Low environmental risk";
+
+        // Health suggestion text
+        let htBody = "";
+        if (activeAirCondsHit.length) {
+          const pollNames = [...new Set(activeAirCondsHit.flatMap(c =>
+            (DISEASE_POLLUTANTS[c]?.air || []).filter(p => triggeredPollutants[p]).map(p => POLLUTANT_META[p]?.label || p)
+          ))];
+          htBody += `Elevated ${pollNames.join(", ")} affects: ${activeAirCondsHit.join(", ")}.<br>`;
+          activeAirCondsHit.forEach(c => { if (HEALTH_SUGGESTIONS[c]) htBody += `<br><strong>${c}:</strong> ${HEALTH_SUGGESTIONS[c]}`; });
+        } else if (activeWaterCondsHit.length) {
+          htBody += waterData.advice + "<br>";
+          activeWaterCondsHit.forEach(c => { if (HEALTH_SUGGESTIONS[c]) htBody += `<br><strong>${c}:</strong> ${HEALTH_SUGGESTIONS[c]}`; });
+        } else if (activeHealth.length) {
+          htBody = "No specific pollutant conflicts detected for your conditions in this area.";
+          activeHealth.slice(0, 2).forEach(c => { if (HEALTH_SUGGESTIONS[c]) htBody += `<br><strong>${c}:</strong> ${HEALTH_SUGGESTIONS[c]}`; });
+        } else {
+          htBody = "No health conditions selected. Area appears within acceptable environmental limits.";
+        }
+
+        const pollRows = buildPollutantRows(h.aqiData?.pollutants, triggeredPollutants);
+
+        const card = document.createElement("div");
+        card.className = "house-card" + (i === 0 ? " top1" : "");
+        card.innerHTML = `
+      <div class="card-top">
+        <div class="card-loc">
+          ${h.loc}
+          ${lvl ? `<span class="aqi-inline-pill" style="color:${aqiColor};border-color:${aqiColor}55;background:${aqiColor}18">AQI ${h.aqiData.aqi} · ${lvl.label}</span>` : ""}
+        </div>
+        <span class="card-rank ${rankClass}">${rankLabel}</span>
+      </div>
+
+      <div class="card-price">₹${h.price}L <span>/ ${h.bhk} BHK · ${h.sqft} sqft</span></div>
+
+      <div class="card-meta">
+        <div class="meta-item">🛏 <strong>${h.bhk}</strong> BHK</div>
+        <div class="meta-item">🚿 <strong>${h.bath}</strong> Bath</div>
+        <div class="meta-item">🏢 <strong>${h.sqft}</strong> sqft</div>
+        <div class="meta-item dist-badge">📍 ${h.dist} km</div>
+      </div>
+
+      ${h.soc ? `<div class="soc-name">${h.soc}</div>` : ""}
+
+      <div class="env-section">
+        <div class="env-top-row">
+          <span class="env-section-label">Pollutant levels</span>
+          <span style="font-size:10px;color:var(--muted)">● safe threshold</span>
+        </div>
+        <div class="poll-rows">${pollRows}</div>
+
+        <div class="water-line" style="margin-top:4px">
+          <div class="water-dot" style="background:${wc}"></div>
+          <span>Water: <strong style="color:${wc}">${waterData.risk} risk</strong></span>
+          ${waterData.issues.length ? `<span style="color:var(--muted)">· ${waterData.issues.join(", ")}</span>` : ""}
+        </div>
+
+        <div class="health-tag ${htCls}">
+          <span class="ht-label">${htLabel}</span>
+          ${htBody}
+        </div>
+      </div>`;
+
+        card.addEventListener("click", () => map.setView([h.lat, h.lng], 15));
+        panel.appendChild(card);
+      });
+    }
+
+    // ═══════════════════════════════════════════════
+    // RENDER MAP
+    // ═══════════════════════════════════════════════
+    function renderMap(results, company) {
+      markerLayer.clearLayers();
+      L.circleMarker([company.lat, company.lng], { radius: 12, color: "#e8a045", fillColor: "#e8a045", fillOpacity: 1, weight: 3 })
+        .addTo(markerLayer)
+        .bindPopup(`<b>🏢 ${company.name}</b><br><span style="font-size:11px;color:#888">${company.area}</span>`);
+
+      const colors = ["#e8a045", "#5b8dee", "#7ec8a4", "#c97ae8", "#e87a7a"];
+      const jittered = jitterCoords(results);
+      const bounds = [[company.lat, company.lng]];
+
+      jittered.forEach((h, i) => {
+        const size = i === 0 ? 42 : 34;
+        const aqiColor = h.aqiData?.color || "#444";
+        const lvl = h.aqiData?.aqi ? aqiLevel(h.aqiData.aqi) : null;
+        const hasAir = h.risks?.airRisks?.length > 0 || (h.aqiData?.aqi > 100);
+        const hasWater = h.risks?.waterRisks?.length > 0;
+        const ringColor = hasAir ? "#f0843a" : hasWater ? "#5b8dee" : colors[i];
+        const pulse = i === 0
+          ? `<div style="position:absolute;inset:-8px;border-radius:50%;border:3px solid ${ringColor};opacity:.5;animation:pulse 1.8s ease-out infinite;"></div>`
+          : "";
+        const aqiMini = h.aqiData?.aqi
+          ? `<div style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:${aqiColor};color:#000;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.5)">${h.aqiData.aqi}</div>`
+          : "";
+        const icon = L.divIcon({
+          className: "",
+          html: `<div style="position:relative;width:${size}px;height:${size}px;">
+        ${pulse}
+        <div style="position:absolute;inset:0;background:${colors[i]};color:${i === 0 ? "#000" : "#fff"};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:${i === 0 ? 15 : 13}px;font-weight:700;box-shadow:0 3px 14px rgba(0,0,0,.7);border:${i === 0 ? "3px solid #fff" : "2px solid rgba(255,255,255,.35)"}">
+          ${i + 1}
+        </div>
+        ${aqiMini}
+      </div>`,
+          iconSize: [size, size], iconAnchor: [size / 2, size / 2]
+        });
+
+        const waterData = getWaterRisk(h.loc);
+        const pollSummary = h.aqiData?.pollutants
+          ? Object.entries(h.aqiData.pollutants).filter(([k, v]) => v != null)
+            .map(([k, v]) => `${POLLUTANT_META[k]?.label || k}: ${v}`).join(" · ")
+          : "";
+
+        L.marker([h.jLat, h.jLng], { icon }).addTo(markerLayer).bindPopup(`
+      <b>#${i + 1} ${h.loc}</b><br>
+      ₹${h.price}L · ${h.bhk} BHK · ${h.sqft} sqft<br>
+      <span style="color:#5b8dee;font-size:11px">📍 ${h.dist} km to workplace</span>
+      ${lvl ? `<br><span style="color:${aqiColor}">AQI ${h.aqiData.aqi} · ${lvl.label}</span>` : ""}
+      ${pollSummary ? `<br><span style="font-size:10px;color:#aaa">${pollSummary}</span>` : ""}
+      ${waterData.issues.length ? `<br><span style="color:#5b8dee;font-size:10px">💧 ${waterData.risk}: ${waterData.issues.join(", ")}</span>` : ""}
+    `);
+        L.polyline([[company.lat, company.lng], [h.jLat, h.jLng]], {
+          color: colors[i], weight: i === 0 ? 2 : 1, opacity: i === 0 ? .7 : .35, dashArray: "4 6"
+        }).addTo(markerLayer);
+        bounds.push([h.jLat, h.jLng]);
+      });
+
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
+
+    function showEmpty(msg) {
+      document.getElementById("results-panel").innerHTML = `<div class="empty-state"><div class="big">🔍</div><p>${msg}</p></div>`;
+      markerLayer.clearLayers();
+    }
+  </script>
+</body>
+
+</html>

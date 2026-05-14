@@ -240,7 +240,7 @@ Return ONLY a JSON object in this format (no markdown, no explanation):
       const ranked = result.ranked.map(id => SAMPLE_HOUSES.find(h => h.id === id)).filter(Boolean);
       onResults(ranked);
       setMessages(prev => [...prev,
-        { role: "assistant", text: `✅ Analysis complete! Here's what I found for you:\n\n${result.summary}\n\n💡 Tips:\n${result.tips.map(t => `• ${t}`).join("\n")}` }
+      { role: "assistant", text: `✅ Analysis complete! Here's what I found for you:\n\n${result.summary}\n\n💡 Tips:\n${result.tips.map(t => `• ${t}`).join("\n")}` }
       ]);
       setDone(true);
     } catch (e) {
@@ -420,7 +420,7 @@ function HouseDetail({ house, onBack }) {
         <button onClick={onBack} style={{ background: "none", border: "none", color: "#fff", fontSize: 20, cursor: "pointer" }}>←</button>
         <span style={{ color: "#fff", fontWeight: 700, fontSize: 16 }}>{house.title}</span>
       </div>
-      <MapView houses={[house]} selected={house} onSelect={() => {}} />
+      <MapView houses={[house]} selected={house} onSelect={() => { }} />
       <div style={{ padding: "16px 16px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <span style={{ fontSize: 26, fontWeight: 800, color: COLORS.primary }}>₹{house.rent.toLocaleString()}/mo</span>

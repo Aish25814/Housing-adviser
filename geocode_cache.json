@@ -1,0 +1,1957 @@
+{
+  "1 Immadihalli": {
+    "lat": 12.966399,
+    "lng": 77.762046
+  },
+  "1 Ramamurthy Nagar": {
+    "lat": 13.012022,
+    "lng": 77.677782
+  },
+  "1A Block Koramangala": null,
+  "1st Block BEL Layout": {
+    "lat": 13.070346,
+    "lng": 77.555531
+  },
+  "1st Block HBR Layout": {
+    "lat": 13.031992,
+    "lng": 77.628079
+  },
+  "1st Block HRBR Layout": {
+    "lat": 13.010055,
+    "lng": 77.643106
+  },
+  "1st Block Jayanagar": {
+    "lat": 12.918297,
+    "lng": 77.574153
+  },
+  "1st Block Koramangala": {
+    "lat": 12.924817,
+    "lng": 77.634249
+  },
+  "1st Phase JP Nagar": {
+    "lat": 12.911003,
+    "lng": 77.578875
+  },
+  "1st Stage Domlur": {
+    "lat": 12.967972,
+    "lng": 77.636795
+  },
+  "1st Stage Indira Nagar": {
+    "lat": 12.978354,
+    "lng": 77.638894
+  },
+  "2nd Block Bel Layout": {
+    "lat": 13.072968,
+    "lng": 77.554357
+  },
+  "2nd Block Hbr Layout": {
+    "lat": 13.025208,
+    "lng": 77.626184
+  },
+  "2nd Block Hrbr Layout": {
+    "lat": 13.014713,
+    "lng": 77.629979
+  },
+  "2nd Block Jayanagar": {
+    "lat": 12.938148,
+    "lng": 77.582827
+  },
+  "2nd Block Koramangala": {
+    "lat": 12.935464,
+    "lng": 77.616304
+  },
+  "2nd Phase JP Nagar": {
+    "lat": 12.910406,
+    "lng": 77.59511
+  },
+  "2nd Phase Judicial Layout": {
+    "lat": 12.8653,
+    "lng": 77.537238
+  },
+  "2nd Stage Arekere Mico Layout": {
+    "lat": 12.890554,
+    "lng": 77.594191
+  },
+  "2nd Stage Nagarbhavi": {
+    "lat": 12.951235,
+    "lng": 77.519054
+  },
+  "2nd phase jp nagar, jp nagar": {
+    "lat": 12.910406,
+    "lng": 77.59511
+  },
+  "3rd Block Banashankari": {
+    "lat": 12.92782,
+    "lng": 77.556621
+  },
+  "3rd Block HBR Layout": {
+    "lat": 13.031406,
+    "lng": 77.63556
+  },
+  "3rd Block Hrbr Layout": {
+    "lat": 13.020316,
+    "lng": 77.632542
+  },
+  "3rd Block Jayanagar": {
+    "lat": 12.933863,
+    "lng": 77.583034
+  },
+  "3rd Block Koramangala": {
+    "lat": 12.935737,
+    "lng": 77.624081
+  },
+  "3rd Phase JP Nagar": {
+    "lat": 12.911435,
+    "lng": 77.599296
+  },
+  "4th Block HBR Layout": {
+    "lat": 13.034041,
+    "lng": 77.630996
+  },
+  "4th Block Jayanagar": {
+    "lat": 12.926234,
+    "lng": 77.583415
+  },
+  "4th Block Koramangala": {
+    "lat": 12.929984,
+    "lng": 77.6305
+  },
+  "4th Phase JP Nagar": {
+    "lat": 12.904637,
+    "lng": 77.597643
+  },
+  "4th T block Jayanagar": {
+    "lat": 12.930253,
+    "lng": 77.590387
+  },
+  "5th Block Hbr Layout": {
+    "lat": 13.037466,
+    "lng": 77.628799
+  },
+  "5th Block Jayanagar": {
+    "lat": 12.920021,
+    "lng": 77.581104
+  },
+  "5th Phase JP Nagar": {
+    "lat": 12.901068,
+    "lng": 77.58594
+  },
+  "5th Stage BEML Layout": {
+    "lat": 13.150164,
+    "lng": 77.668899
+  },
+  "5th block Koramangala": {
+    "lat": 12.935464,
+    "lng": 77.616304
+  },
+  "6th Block Jayanagar": {
+    "lat": 12.929273,
+    "lng": 77.582423
+  },
+  "6th Phase JP Nagar": {
+    "lat": 12.907132,
+    "lng": 77.573401
+  },
+  "6th block Koramangala": {
+    "lat": 12.939025,
+    "lng": 77.623848
+  },
+  "7th Block Jayanagar": {
+    "lat": 12.92375,
+    "lng": 77.57426
+  },
+  "7th Block Koramangala": {
+    "lat": 12.934708,
+    "lng": 77.612685
+  },
+  "7th Phase JP Nagar": {
+    "lat": 12.913613,
+    "lng": 77.595695
+  },
+  "8th Block Jayanagar": {
+    "lat": 12.938148,
+    "lng": 77.582827
+  },
+  "8th Phase JP Nagar": {
+    "lat": 12.910406,
+    "lng": 77.59511
+  },
+  "8th block Koramangala": {
+    "lat": 12.92876,
+    "lng": 77.628712
+  },
+  "9th Block Jayanagar": {
+    "lat": 12.92897,
+    "lng": 77.583992
+  },
+  "9th Phase JP Nagar": {
+    "lat": 12.910491,
+    "lng": 77.581541
+  },
+  "A Narayanapura": {
+    "lat": 12.995973,
+    "lng": 77.678136
+  },
+  "AECS LAYOUT A-BLOCK Singasandra": {
+    "lat": 12.88143,
+    "lng": 77.652539
+  },
+  "AECS Layout": {
+    "lat": 12.964118,
+    "lng": 77.713037
+  },
+  "AGS Layout": {
+    "lat": 12.912765,
+    "lng": 77.53405
+  },
+  "AMS Layout": {
+    "lat": 13.087732,
+    "lng": 77.558576
+  },
+  "Abbaiah Reddy Layout": {
+    "lat": 12.979226,
+    "lng": 77.680936
+  },
+  "Abbigere": {
+    "lat": 13.078418,
+    "lng": 77.524532
+  },
+  "Abshot Layout": {
+    "lat": 12.993073,
+    "lng": 77.586643
+  },
+  "Adarsh Nagar": {
+    "lat": 13.030545,
+    "lng": 77.609433
+  },
+  "Adugodi": {
+    "lat": 12.944023,
+    "lng": 77.608887
+  },
+  "Agara Village": {
+    "lat": 12.844601,
+    "lng": 77.48794
+  },
+  "Agrahara Dasarahalli": {
+    "lat": 12.983017,
+    "lng": 77.539906
+  },
+  "Air View Colony": {
+    "lat": 12.954741,
+    "lng": 77.661264
+  },
+  "Akash Nagar": {
+    "lat": 12.959129,
+    "lng": 77.697498
+  },
+  "Akshaya Nagar": {
+    "lat": 13.019543,
+    "lng": 77.683127
+  },
+  "Akshya Nagar": {
+    "lat": 13.069406,
+    "lng": 77.545115
+  },
+  "Alfa Garden Layout": {
+    "lat": 12.968475,
+    "lng": 77.598107
+  },
+  "Allalasandra": {
+    "lat": 13.091013,
+    "lng": 77.586393
+  },
+  "Alur": {
+    "lat": 12.960606,
+    "lng": 77.571348
+  },
+  "Ambalipura": {
+    "lat": 12.91733,
+    "lng": 77.667161
+  },
+  "Ambedkar Colony": {
+    "lat": 12.970893,
+    "lng": 77.695192
+  },
+  "Ambedkar Nagar": {
+    "lat": 12.949085,
+    "lng": 77.618487
+  },
+  "Amrita Nagar": {
+    "lat": 13.026063,
+    "lng": 77.575013
+  },
+  "Amruthahalli": {
+    "lat": 13.064843,
+    "lng": 77.599343
+  },
+  "Amruthnagar": {
+    "lat": 13.05699,
+    "lng": 77.598109
+  },
+  "Anand Nagar": null,
+  "Anand nagar": {
+    "lat": 13.034699,
+    "lng": 77.594456
+  },
+  "Anandapura": {
+    "lat": 13.023928,
+    "lng": 77.692362
+  },
+  "Anantapura": {
+    "lat": 13.115089,
+    "lng": 77.567997
+  },
+  "Anantapuram": {
+    "lat": 13.114783,
+    "lng": 77.578996
+  },
+  "Andrahalli": {
+    "lat": 13.019688,
+    "lng": 77.488945
+  },
+  "Anekal": {
+    "lat": 12.783655,
+    "lng": 77.746141
+  },
+  "Anekal - Hosur Road": null,
+  "Anjana Nagar": {
+    "lat": 13.025792,
+    "lng": 77.603797
+  },
+  "Anjanapura": {
+    "lat": 12.860131,
+    "lng": 77.554059
+  },
+  "Annaiah Reddy Layout": {
+    "lat": 12.979738,
+    "lng": 77.624122
+  },
+  "Annapurneshwari Nagar": {
+    "lat": 12.974171,
+    "lng": 77.588026
+  },
+  "Ardendale": {
+    "lat": 13.026132,
+    "lng": 77.76647
+  },
+  "Arehalli": {
+    "lat": 12.908498,
+    "lng": 77.538512
+  },
+  "Arekempanahalli": {
+    "lat": 12.944601,
+    "lng": 77.594691
+  },
+  "Arekere": {
+    "lat": 12.887209,
+    "lng": 77.596049
+  },
+  "Arishinakunte": {
+    "lat": 13.078477,
+    "lng": 77.422568
+  },
+  "Ashirvad Colony": {
+    "lat": 12.939851,
+    "lng": 77.574033
+  },
+  "Ashok Nagar": {
+    "lat": 12.969436,
+    "lng": 77.609232
+  },
+  "Ashraya Layout": {
+    "lat": 12.985824,
+    "lng": 77.705454
+  },
+  "Ashwath Nagar": {
+    "lat": 12.961964,
+    "lng": 77.698892
+  },
+  "Ashwathnagar": {
+    "lat": 13.02594,
+    "lng": 77.57954
+  },
+  "Ashwini layout": {
+    "lat": 12.939658,
+    "lng": 77.628897
+  },
+  "Attibele": {
+    "lat": 12.775125,
+    "lng": 77.770922
+  },
+  "Attiguppe": {
+    "lat": 12.961858,
+    "lng": 77.533593
+  },
+  "Attur Layout": {
+    "lat": 13.099454,
+    "lng": 77.568034
+  },
+  "Austin Town": {
+    "lat": 12.961274,
+    "lng": 77.615294
+  },
+  "Avalahalli": {
+    "lat": 12.945946,
+    "lng": 77.540935
+  },
+  "Ayappa Nagar": {
+    "lat": 12.970908,
+    "lng": 77.670029
+  },
+  "B Channasandra": {
+    "lat": 13.009915,
+    "lng": 77.660272
+  },
+  "B K Nagar": {
+    "lat": 12.967755,
+    "lng": 77.57441
+  },
+  "B Narayanapura": {
+    "lat": 12.998056,
+    "lng": 77.684862
+  },
+  "BCC Layout": {
+    "lat": 12.955703,
+    "lng": 77.531333
+  },
+  "BCMC Layout": {
+    "lat": 12.876682,
+    "lng": 77.550238
+  },
+  "BEL Layout": {
+    "lat": 13.072968,
+    "lng": 77.554357
+  },
+  "BEL Road": {
+    "lat": 13.045934,
+    "lng": 77.556217
+  },
+  "BEML Layout": {
+    "lat": 12.96111,
+    "lng": 77.716474
+  },
+  "BEML Layout 5th Stage": {
+    "lat": 12.908359,
+    "lng": 77.520906
+  },
+  "BEML Layout 5th stage": {
+    "lat": 12.908359,
+    "lng": 77.520906
+  },
+  "BHEL Layout": {
+    "lat": 12.918437,
+    "lng": 77.50925
+  },
+  "BTM 1st Stage": {
+    "lat": 12.919411,
+    "lng": 77.609966
+  },
+  "BTM 2nd Stage": {
+    "lat": 12.914079,
+    "lng": 77.618886
+  },
+  "BTM Layout": {
+    "lat": 12.914001,
+    "lng": 77.610282
+  },
+  "BTM Layout 2nd Stage 1st Phase": {
+    "lat": 12.914008,
+    "lng": 77.607945
+  },
+  "Baba Nagar": {
+    "lat": 12.972563,
+    "lng": 77.638459
+  },
+  "Babusapalaya": {
+    "lat": 13.028352,
+    "lng": 77.650469
+  },
+  "Badrappa Layout": {
+    "lat": 13.05144,
+    "lng": 77.576034
+  },
+  "Bagalur": {
+    "lat": 13.007992,
+    "lng": 77.618473
+  },
+  "Bagalur Main Road": {
+    "lat": 13.130238,
+    "lng": 77.666445
+  },
+  "Bahubali Nagar": {
+    "lat": 13.045067,
+    "lng": 77.549215
+  },
+  "Balagere": {
+    "lat": 12.937724,
+    "lng": 77.728071
+  },
+  "Balepet": {
+    "lat": 12.973118,
+    "lng": 77.575932
+  },
+  "Banagiri Nagar": {
+    "lat": 12.922855,
+    "lng": 77.558632
+  },
+  "Banasawadi,": {
+    "lat": 13.006057,
+    "lng": 77.627683
+  },
+  "Banashankari": {
+    "lat": 12.92782,
+    "lng": 77.556621
+  },
+  "Banashankari 2 nd Stage": {
+    "lat": 12.88356,
+    "lng": 77.514096
+  },
+  "Banashankari 2nd Stage": {
+    "lat": 12.926867,
+    "lng": 77.563719
+  },
+  "Banashankari 6th Stage": {
+    "lat": 12.884924,
+    "lng": 77.515485
+  },
+  "Banashankari 6th Stage ,Subramanyapura": {
+    "lat": 12.893326,
+    "lng": 77.521938
+  },
+  "Banashankari 6th stage , 2nd block": {
+    "lat": 12.884924,
+    "lng": 77.515485
+  },
+  "Banashankari Stage I": {
+    "lat": 12.884924,
+    "lng": 77.515485
+  },
+  "Banashankari Stage II": {
+    "lat": 12.884924,
+    "lng": 77.515485
+  },
+  "Banashankari Stage V": {
+    "lat": 12.884924,
+    "lng": 77.515485
+  },
+  "Banashankari Stage VI": {
+    "lat": 12.884924,
+    "lng": 77.515485
+  },
+  "Banashankari stage 2": {
+    "lat": 12.924459,
+    "lng": 77.570154
+  },
+  "Banaswadi": {
+    "lat": 13.014162,
+    "lng": 77.651854
+  },
+  "Banaswadi,": {
+    "lat": 13.014162,
+    "lng": 77.651854
+  },
+  "Bande Nallasandra": {
+    "lat": 12.791765,
+    "lng": 77.651563
+  },
+  "Bandepalya": {
+    "lat": 12.8804,
+    "lng": 77.649126
+  },
+  "Banjara Layout": {
+    "lat": 13.038301,
+    "lng": 77.665251
+  },
+  "Bank Avenue": {
+    "lat": 13.022568,
+    "lng": 77.652799
+  },
+  "Bank Of Baroda Colony": {
+    "lat": 12.893481,
+    "lng": 77.58374
+  },
+  "Bannerghatta": {
+    "lat": 12.933381,
+    "lng": 77.601109
+  },
+  "Bannerghatta Road": {
+    "lat": 12.868909,
+    "lng": 77.592674
+  },
+  "Bapuji Nagar": {
+    "lat": 12.95567,
+    "lng": 77.540249
+  },
+  "Basapura": {
+    "lat": 12.868666,
+    "lng": 77.644174
+  },
+  "Basava Nagar": {
+    "lat": 12.985476,
+    "lng": 77.588767
+  },
+  "Basavanagara": {
+    "lat": 12.966779,
+    "lng": 77.68285
+  },
+  "Basavanapura": {
+    "lat": 13.009348,
+    "lng": 77.710838
+  },
+  "Basavangudi": {
+    "lat": 12.942187,
+    "lng": 77.574258
+  },
+  "Basavanna Nagar": {
+    "lat": 12.988867,
+    "lng": 77.720444
+  },
+  "Basaveshwara Nagar": {
+    "lat": 12.991257,
+    "lng": 77.53841
+  },
+  "Battarahalli": {
+    "lat": 13.011473,
+    "lng": 77.709934
+  },
+  "Begur": {
+    "lat": 12.863389,
+    "lng": 77.613011
+  },
+  "Begur Road": {
+    "lat": 12.885619,
+    "lng": 77.625242
+  },
+  "Belathur": {
+    "lat": 12.998982,
+    "lng": 77.740873
+  },
+  "Belatur": {
+    "lat": 12.997586,
+    "lng": 77.755905
+  },
+  "Bellandur": {
+    "lat": 12.932049,
+    "lng": 77.684292
+  },
+  "Bellandur,": {
+    "lat": 12.932049,
+    "lng": 77.684292
+  },
+  "Beml layout, Rajarajeshwari nagar": {
+    "lat": 12.919653,
+    "lng": 77.52022
+  },
+  "Bendiganahalli": {
+    "lat": 12.812591,
+    "lng": 77.73773
+  },
+  "Benson Town": {
+    "lat": 12.997343,
+    "lng": 77.603681
+  },
+  "Bethel Nagar": {
+    "lat": 12.959776,
+    "lng": 77.601603
+  },
+  "Bettadasanapura": {
+    "lat": 12.841569,
+    "lng": 77.631943
+  },
+  "Bharat Nagar": {
+    "lat": 13.022235,
+    "lng": 77.567183
+  },
+  "Bharathi Nagar": {
+    "lat": 12.989843,
+    "lng": 77.610334
+  },
+  "Bharathnagar": {
+    "lat": 12.980126,
+    "lng": 77.478408
+  },
+  "Bhattarahalli": {
+    "lat": 13.025597,
+    "lng": 77.714555
+  },
+  "Bhuvaneshwari Nagar": {
+    "lat": 12.971526,
+    "lng": 77.559522
+  },
+  "Bhuvaneswari Nagar": {
+    "lat": 13.054746,
+    "lng": 77.60244
+  },
+  "Bidadi": {
+    "lat": 12.886165,
+    "lng": 77.58229
+  },
+  "Bilal Nagar": {
+    "lat": 12.920824,
+    "lng": 77.599025
+  },
+  "Bileshivale": {
+    "lat": 13.054331,
+    "lng": 77.671022
+  },
+  "Billamaranahalli": {
+    "lat": 13.150383,
+    "lng": 77.637447
+  },
+  "Billapura": {
+    "lat": 12.841069,
+    "lng": 77.788725
+  },
+  "Binnamangala": {
+    "lat": 12.983988,
+    "lng": 77.641677
+  },
+  "Bommanahalli": {
+    "lat": 12.903458,
+    "lng": 77.623003
+  },
+  "Bommasandra": {
+    "lat": 12.816016,
+    "lng": 77.689222
+  },
+  "Bommasandra Industrial Area": {
+    "lat": 12.813751,
+    "lng": 77.695337
+  },
+  "Bommenahalli": {
+    "lat": 13.074254,
+    "lng": 77.746594
+  },
+  "Brigade Road": {
+    "lat": 12.973635,
+    "lng": 77.607529
+  },
+  "Brindavan Layout": {
+    "lat": 12.968366,
+    "lng": 77.760634
+  },
+  "Brindavan Nagar": {
+    "lat": 12.974127,
+    "lng": 77.608645
+  },
+  "Brookefield": {
+    "lat": 12.965209,
+    "lng": 77.717936
+  },
+  "Budigere": {
+    "lat": 13.142344,
+    "lng": 77.733969
+  },
+  "Bull Temple Road": {
+    "lat": 12.941652,
+    "lng": 77.566921
+  },
+  "Byadarahalli": {
+    "lat": 12.977909,
+    "lng": 77.484086
+  },
+  "Byappanahalli": {
+    "lat": 12.989942,
+    "lng": 77.65343
+  },
+  "Byatarayanapura": {
+    "lat": 13.068322,
+    "lng": 77.591006
+  },
+  "Byrasandra": {
+    "lat": 12.929593,
+    "lng": 77.581181
+  },
+  "CMH Road": {
+    "lat": 12.978438,
+    "lng": 77.643756
+  },
+  "CQAL Layout": {
+    "lat": 13.107164,
+    "lng": 77.568291
+  },
+  "CR Layout": {
+    "lat": 12.874911,
+    "lng": 77.610707
+  },
+  "CV Raman Nagar": {
+    "lat": 12.985099,
+    "lng": 77.663117
+  },
+  "Cambridge  road": {
+    "lat": 12.964877,
+    "lng": 77.628116
+  },
+  "Cambridge Layout": {
+    "lat": 13.007628,
+    "lng": 77.725877
+  },
+  "Canara Bank Colony": {
+    "lat": 12.93119,
+    "lng": 77.590894
+  },
+  "Canara Bank Layout": {
+    "lat": 13.068572,
+    "lng": 77.578355
+  },
+  "Carmelaram": {
+    "lat": 12.9112,
+    "lng": 77.706513
+  },
+  "Celebrity Paradise Layout": {
+    "lat": 12.848173,
+    "lng": 77.653198
+  },
+  "Challaghatta": {
+    "lat": 12.945101,
+    "lng": 77.651534
+  },
+  "Chambenahalli": {
+    "lat": 12.888638,
+    "lng": 77.766238
+  },
+  "Chamrajpet": {
+    "lat": 12.958418,
+    "lng": 77.562916
+  },
+  "Chamundi Nagar": {
+    "lat": 13.034122,
+    "lng": 77.599305
+  },
+  "Chandapura": {
+    "lat": 12.800904,
+    "lng": 77.711491
+  },
+  "Chandra Layout": {
+    "lat": 12.955333,
+    "lng": 77.52389
+  },
+  "Channasandra": {
+    "lat": 12.987343,
+    "lng": 77.753803
+  },
+  "Channasandra Layout": {
+    "lat": 13.005928,
+    "lng": 77.659468
+  },
+  "Chikka Banaswadi": {
+    "lat": 13.005741,
+    "lng": 77.650824
+  },
+  "Chikkaballapur": {
+    "lat": 13.099376,
+    "lng": 77.388729
+  },
+  "Chikkabettahalli": {
+    "lat": 13.089455,
+    "lng": 77.556171
+  },
+  "Chikkabidarakallu": {
+    "lat": 13.052362,
+    "lng": 77.487915
+  },
+  "Chikkadunnasandra": {
+    "lat": 12.850196,
+    "lng": 77.774294
+  },
+  "Chikkagubbi": {
+    "lat": 13.082258,
+    "lng": 77.661603
+  },
+  "Chikkajala": {
+    "lat": 13.167923,
+    "lng": 77.637283
+  },
+  "Chikkakannalli": {
+    "lat": 12.893703,
+    "lng": 77.708131
+  },
+  "Chikkalasandra": {
+    "lat": 12.912192,
+    "lng": 77.547634
+  },
+  "Chikkanahalli": {
+    "lat": 12.905843,
+    "lng": 77.620273
+  },
+  "Chikkasandra": {
+    "lat": 13.096368,
+    "lng": 77.704792
+  },
+  "Chikkathoguru": {
+    "lat": 12.863846,
+    "lng": 77.653398
+  },
+  "Chikku Lakshmaiah Layout": {
+    "lat": 12.935071,
+    "lng": 77.611604
+  },
+  "Chinnapanahalli": {
+    "lat": 12.966122,
+    "lng": 77.707116
+  },
+  "Chokkanahalli": {
+    "lat": 13.085079,
+    "lng": 77.626354
+  },
+  "Chokkasandra": {
+    "lat": 13.040534,
+    "lng": 77.511224
+  },
+  "Cholanayakanahalli": {
+    "lat": 13.03645,
+    "lng": 77.597527
+  },
+  "Choodasandra": {
+    "lat": 12.888362,
+    "lng": 77.679973
+  },
+  "Chowdeshwari Layout": {
+    "lat": 12.929906,
+    "lng": 77.541511
+  },
+  "Church Street": {
+    "lat": 12.974912,
+    "lng": 77.605256
+  },
+  "Cleveland Town": {
+    "lat": 12.994042,
+    "lng": 77.611605
+  },
+  "Coconut Garden": {
+    "lat": 12.96107,
+    "lng": 77.519066
+  },
+  "Coffee Board Layout": {
+    "lat": 13.050325,
+    "lng": 77.60608
+  },
+  "Cooke Town": {
+    "lat": 13.0022,
+    "lng": 77.625181
+  },
+  "Cottonpet": {
+    "lat": 12.963891,
+    "lng": 77.56853
+  },
+  "Cox Town": {
+    "lat": 12.993486,
+    "lng": 77.625108
+  },
+  "Craig Park Layout": null,
+  "Crimson Layout": {
+    "lat": 12.979955,
+    "lng": 77.710971
+  },
+  "Cubbon Road": {
+    "lat": 12.976195,
+    "lng": 77.611559
+  },
+  "Cunningham Road": {
+    "lat": 12.988421,
+    "lng": 77.593905
+  },
+  "D Group Employees Layout": {
+    "lat": 13.098709,
+    "lng": 77.692631
+  },
+  "D Souza Layout": {
+    "lat": 12.96963,
+    "lng": 77.5968
+  },
+  "DUO Layout": {
+    "lat": 12.869333,
+    "lng": 77.640305
+  },
+  "Dairy Circle": {
+    "lat": 12.937128,
+    "lng": 77.601749
+  },
+  "Dasanapura": {
+    "lat": 12.746772,
+    "lng": 77.774288
+  },
+  "Dasappa Layout": {
+    "lat": 13.082857,
+    "lng": 77.649186
+  },
+  "Dasarahalli": {
+    "lat": 13.046482,
+    "lng": 77.517698
+  },
+  "Deepanjali Nagar": {
+    "lat": 12.952047,
+    "lng": 77.53704
+  },
+  "Defence Colony": {
+    "lat": 12.976171,
+    "lng": 77.643531
+  },
+  "Defence Layout": {
+    "lat": 13.061302,
+    "lng": 77.584727
+  },
+  "Dena Bank Colony": {
+    "lat": 12.960068,
+    "lng": 77.644724
+  },
+  "Devanahalli": {
+    "lat": 13.142411,
+    "lng": 77.734099
+  },
+  "Devanahalli Road": {
+    "lat": 13.142411,
+    "lng": 77.734099
+  },
+  "Devarabisanahalli": {
+    "lat": 12.923485,
+    "lng": 77.686966
+  },
+  "Devarachikkanahalli": {
+    "lat": 12.893154,
+    "lng": 77.621972
+  },
+  "Devasandra Extension": {
+    "lat": 13.02195,
+    "lng": 77.572229
+  },
+  "Devi Nagar": {
+    "lat": 13.01611,
+    "lng": 77.528824
+  },
+  "Dhanalakshmi Layout": {
+    "lat": 12.9725,
+    "lng": 77.651454
+  },
+  "Dinnur": {
+    "lat": 13.026859,
+    "lng": 77.598588
+  },
+  "Doctors Layout": {
+    "lat": 13.005337,
+    "lng": 77.658185
+  },
+  "Dodda Banaswadi": {
+    "lat": 13.013352,
+    "lng": 77.649742
+  },
+  "Dodda Kempaiah Layout": {
+    "lat": 13.036265,
+    "lng": 77.671032
+  },
+  "Dodda Nekkundi": {
+    "lat": 12.972558,
+    "lng": 77.692858
+  },
+  "Doddaballapur": {
+    "lat": 13.12345,
+    "lng": 77.575257
+  },
+  "Doddabanahalli": {
+    "lat": 13.027165,
+    "lng": 77.747387
+  },
+  "Doddabele": {
+    "lat": 12.88849,
+    "lng": 77.471681
+  },
+  "Doddabommasandra": {
+    "lat": 13.054435,
+    "lng": 77.559327
+  },
+  "Doddagubbi": {
+    "lat": 13.072068,
+    "lng": 77.668329
+  },
+  "Doddakallasandra": {
+    "lat": 12.885765,
+    "lng": 77.556705
+  },
+  "Doddakammanahalli": {
+    "lat": 12.850909,
+    "lng": 77.598679
+  },
+  "Doddakannelli": {
+    "lat": 12.911538,
+    "lng": 77.693416
+  },
+  "Doddanekundi": {
+    "lat": 12.971319,
+    "lng": 77.696477
+  },
+  "Doddathoguru": {
+    "lat": 12.850564,
+    "lng": 77.646695
+  },
+  "Dodsworth Layout": {
+    "lat": 12.970802,
+    "lng": 77.744055
+  },
+  "Dollar Scheme Colony": {
+    "lat": 12.918154,
+    "lng": 77.619536
+  },
+  "Dollars Colony": {
+    "lat": 13.041367,
+    "lng": 77.567815
+  },
+  "Dollars Layout": {
+    "lat": 12.90401,
+    "lng": 77.595556
+  },
+  "Domlur": null,
+  "Domlur Layout": null,
+  "Dommasandra": null,
+  "Doopanahalli": null,
+  "Dooravani Nagar": null,
+  "Double Road": null,
+  "Duvasapalya": null,
+  "Dwaraka Nagar": null,
+  "Dwarka Nagar": null,
+  "ECC Road, Whitefield,": null,
+  "EPIP Zone": null,
+  "Ejipura": {
+    "lat": 12.945245,
+    "lng": 77.627478
+  },
+  "Electronic City": {
+    "lat": 12.84876,
+    "lng": 77.648253
+  },
+  "Electronic City Phase 1,": {
+    "lat": 12.849678,
+    "lng": 77.664975
+  },
+  "Electronic City Phase II": {
+    "lat": 12.8474,
+    "lng": 77.672445
+  },
+  "Electronic city Phase 1,": {
+    "lat": 12.849678,
+    "lng": 77.664975
+  },
+  "Electronic city phase 1,": {
+    "lat": 12.849678,
+    "lng": 77.664975
+  },
+  "Electronics City Phase 1": {
+    "lat": 12.840173,
+    "lng": 77.65951
+  },
+  "Escorts Colony": {
+    "lat": 13.102326,
+    "lng": 77.585973
+  },
+  "Ferrar Nagar": {
+    "lat": 13.116436,
+    "lng": 77.564294
+  },
+  "Fraser town": {
+    "lat": 13.002754,
+    "lng": 77.615751
+  },
+  "Frazer Town": {
+    "lat": 12.997585,
+    "lng": 77.613674
+  },
+  "Friends Colony": {
+    "lat": 12.926326,
+    "lng": 77.617175
+  },
+  "GB Palya": {
+    "lat": 13.022615,
+    "lng": 77.705733
+  },
+  "GKW Layout": {
+    "lat": 13.008232,
+    "lng": 77.513008
+  },
+  "GM Palaya": {
+    "lat": 12.974779,
+    "lng": 77.665408
+  },
+  "Gandhi Bazar": {
+    "lat": 12.945787,
+    "lng": 77.570674
+  },
+  "Gandhi Nagar": {
+    "lat": 12.977153,
+    "lng": 77.580031
+  },
+  "Ganesha Block": {
+    "lat": 13.025342,
+    "lng": 77.601956
+  },
+  "Ganga Nagar": {
+    "lat": 13.023247,
+    "lng": 77.588357
+  },
+  "Gangondanahalli": {
+    "lat": 13.029281,
+    "lng": 77.484682
+  },
+  "Garden Layout": {
+    "lat": 12.955904,
+    "lng": 77.714845
+  },
+  "Garudachar Palya": {
+    "lat": 12.98991,
+    "lng": 77.701126
+  },
+  "Gattahalli": {
+    "lat": 12.868563,
+    "lng": 77.702691
+  },
+  "Gattigere": {
+    "lat": 12.920208,
+    "lng": 77.525501
+  },
+  "Gayathri Nagar": {
+    "lat": 13.000757,
+    "lng": 77.560599
+  },
+  "Geddalahalli": {
+    "lat": 13.036768,
+    "lng": 77.567567
+  },
+  "Geetanjali Layout": {
+    "lat": 12.97671,
+    "lng": 77.654747
+  },
+  "Geleyara Balaga Layout": {
+    "lat": 13.071282,
+    "lng": 77.50615
+  },
+  "Gkvk Layout": {
+    "lat": 13.082707,
+    "lng": 77.603463
+  },
+  "Glass Factory Layout": {
+    "lat": 12.876373,
+    "lng": 77.567062
+  },
+  "Gnana Bharathi": {
+    "lat": 12.952903,
+    "lng": 77.5158
+  },
+  "Gokula Extension": {
+    "lat": 13.005891,
+    "lng": 77.579156
+  },
+  "Gollahalli": {
+    "lat": 12.821532,
+    "lng": 77.585271
+  },
+  "Gollarahatti": {
+    "lat": 12.9893,
+    "lng": 77.474567
+  },
+  "Gopal Reddy Layout": {
+    "lat": 12.969003,
+    "lng": 77.693499
+  },
+  "Gopalapura": {
+    "lat": 12.980613,
+    "lng": 77.558115
+  },
+  "Goraguntepalya": {
+    "lat": 13.026931,
+    "lng": 77.54409
+  },
+  "Gottigere": {
+    "lat": 12.856532,
+    "lng": 77.587724
+  },
+  "Govindapura": {
+    "lat": 13.031452,
+    "lng": 77.617598
+  },
+  "Govindaraja Nagar Ward": {
+    "lat": 12.975563,
+    "lng": 77.536738
+  },
+  "Gowdanapalya": {
+    "lat": 12.908216,
+    "lng": 77.557797
+  },
+  "Green Domain Layout": {
+    "lat": 12.972847,
+    "lng": 77.714894
+  },
+  "Green Garden Layout": {
+    "lat": 12.872724,
+    "lng": 77.645123
+  },
+  "Green Glen Layout": {
+    "lat": 12.926904,
+    "lng": 77.670188
+  },
+  "Green View Layout": {
+    "lat": 13.005238,
+    "lng": 77.649218
+  },
+  "Green Woods Layout": {
+    "lat": 13.058495,
+    "lng": 77.626366
+  },
+  "Gubbalala": {
+    "lat": 12.885663,
+    "lng": 77.541681
+  },
+  "Gubbi Cross, Hennur Main Road": {
+    "lat": 13.084348,
+    "lng": 77.654157
+  },
+  "Guddadahalli": {
+    "lat": 12.957893,
+    "lng": 77.546445
+  },
+  "Gulakamale": {
+    "lat": 12.80376,
+    "lng": 77.528431
+  },
+  "Gulimangala": {
+    "lat": 12.849277,
+    "lng": 77.700153
+  },
+  "Guni Agrahara": {
+    "lat": 13.098095,
+    "lng": 77.525062
+  },
+  "Gunjur": {
+    "lat": 12.920977,
+    "lng": 77.736102
+  },
+  "Gunjur Palya": {
+    "lat": 12.922838,
+    "lng": 77.718831
+  },
+  "HAL 2nd Stage": {
+    "lat": 12.968941,
+    "lng": 77.643711
+  },
+  "HAL 3rd Stage": {
+    "lat": 12.971534,
+    "lng": 77.649782
+  },
+  "HAL Layout": {
+    "lat": 12.959818,
+    "lng": 77.650247
+  },
+  "HBR Layout": {
+    "lat": 13.031992,
+    "lng": 77.628079
+  },
+  "HMT Layout": {
+    "lat": 13.027652,
+    "lng": 77.592125
+  },
+  "HOSUR MAIN ROAD": {
+    "lat": 12.94199,
+    "lng": 77.597381
+  },
+  "HRBR Layout": {
+    "lat": 13.014152,
+    "lng": 77.634056
+  },
+  "HSR Layout": {
+    "lat": 12.911623,
+    "lng": 77.638862
+  },
+  "HSR Layout 7th sector,": {
+    "lat": 12.919362,
+    "lng": 77.651184
+  },
+  "Hadosiddapura": {
+    "lat": 12.899814,
+    "lng": 77.701924
+  },
+  "Hagadur": {
+    "lat": 12.96492,
+    "lng": 77.755875
+  },
+  "Hal old airport road": {
+    "lat": 12.959397,
+    "lng": 77.653129
+  },
+  "Halanayakanahalli": {
+    "lat": 12.896665,
+    "lng": 77.685549
+  },
+  "Handenahalli": {
+    "lat": 12.825981,
+    "lng": 77.767346
+  },
+  "Hanumagiri": {
+    "lat": 12.918065,
+    "lng": 77.53637
+  },
+  "Hanuman Nagar": {
+    "lat": 12.970095,
+    "lng": 77.656115
+  },
+  "Hanumanth Nagar": {
+    "lat": 12.947348,
+    "lng": 77.563478
+  },
+  "Hanumantha Nagar": {
+    "lat": 12.940641,
+    "lng": 77.563543
+  },
+  "Haralur Road": {
+    "lat": 12.901801,
+    "lng": 77.664177
+  },
+  "Haralur Road,": {
+    "lat": 12.901801,
+    "lng": 77.664177
+  },
+  "Harappanahalli": {
+    "lat": 12.776498,
+    "lng": 77.63262
+  },
+  "Harlur": {
+    "lat": 12.905892,
+    "lng": 77.675465
+  },
+  "Harohalli": {
+    "lat": 13.130503,
+    "lng": 77.58046
+  },
+  "Harsha Layout": {
+    "lat": 12.962982,
+    "lng": 77.389619
+  },
+  "Hebbal": {
+    "lat": 13.038218,
+    "lng": 77.5919
+  },
+  "Hebbal Kempapura": {
+    "lat": 13.050194,
+    "lng": 77.607595
+  },
+  "Hegde Nagar": {
+    "lat": 13.072035,
+    "lng": 77.633391
+  },
+  "Hegganahalli": {
+    "lat": 13.003474,
+    "lng": 77.510738
+  },
+  "Hennagara": {
+    "lat": 12.790688,
+    "lng": 77.674116
+  },
+  "Hennur": {
+    "lat": 13.037077,
+    "lng": 77.641357
+  },
+  "Hennur Bande": {
+    "lat": 13.036725,
+    "lng": 77.640504
+  },
+  "Hennur Gardens": {
+    "lat": 13.037691,
+    "lng": 77.64329
+  },
+  "Hennur Road": {
+    "lat": 13.037706,
+    "lng": 77.630364
+  },
+  "Herohalli": {
+    "lat": 12.991234,
+    "lng": 77.487012
+  },
+  "Hessarghatta": {
+    "lat": 13.048426,
+    "lng": 77.507623
+  },
+  "High grounds": {
+    "lat": 12.986513,
+    "lng": 77.583077
+  },
+  "Himagiri Meadows": {
+    "lat": 12.8963,
+    "lng": 77.589411
+  },
+  "Hommadevanahalli": {
+    "lat": 12.844353,
+    "lng": 77.598102
+  },
+  "Hongasandra": {
+    "lat": 12.898626,
+    "lng": 77.628673
+  },
+  "Hoodi": {
+    "lat": 12.995923,
+    "lng": 77.71928
+  },
+  "Hoodi Circle,": {
+    "lat": 12.991962,
+    "lng": 77.715423
+  },
+  "Hoodi Layout": {
+    "lat": 12.993733,
+    "lng": 77.717173
+  },
+  "Horamavu Agara": {
+    "lat": 13.037817,
+    "lng": 77.650462
+  },
+  "Horamavu Banaswadi": {
+    "lat": 13.016672,
+    "lng": 77.654813
+  },
+  "Hosa Road": {
+    "lat": 12.872256,
+    "lng": 77.663486
+  },
+  "Hosahalli": {
+    "lat": 12.966043,
+    "lng": 77.541498
+  },
+  "Hosakerehalli": {
+    "lat": 12.929937,
+    "lng": 77.537424
+  },
+  "Hosakerehalli Layout": {
+    "lat": 12.934592,
+    "lng": 77.542341
+  },
+  "Hosapalya": {
+    "lat": 12.897422,
+    "lng": 77.649687
+  },
+  "Hoskote": {
+    "lat": 13.031844,
+    "lng": 77.761878
+  },
+  "Hosur Road": {
+    "lat": 12.9331,
+    "lng": 77.613098
+  },
+  "Hulimavu": {
+    "lat": 12.877349,
+    "lng": 77.602803
+  },
+  "Hullahalli": {
+    "lat": 12.824492,
+    "lng": 77.617521
+  },
+  "Hunasamaranahalli": {
+    "lat": 13.139862,
+    "lng": 77.623051
+  },
+  "Huskur": {
+    "lat": 12.860767,
+    "lng": 77.707102
+  },
+  "ISRO Layout": {
+    "lat": 12.897428,
+    "lng": 77.557383
+  },
+  "ITI Layout": {
+    "lat": 12.966573,
+    "lng": 77.501671
+  },
+  "ITPL": {
+    "lat": 12.98463,
+    "lng": 77.737733
+  },
+  "Iggalur": {
+    "lat": 12.781144,
+    "lng": 77.701449
+  },
+  "Ilyas Nagar": {
+    "lat": 12.907039,
+    "lng": 77.569309
+  },
+  "Immadihalli": {
+    "lat": 12.966399,
+    "lng": 77.762046
+  },
+  "Indira Nagar": {
+    "lat": 12.973291,
+    "lng": 77.640467
+  },
+  "Indira Nagar 3rd Stage": {
+    "lat": 12.976843,
+    "lng": 77.646592
+  },
+  "Indira Nagar Stage 2": {
+    "lat": 12.973291,
+    "lng": 77.640467
+  },
+  "Indiranagar HAL 2nd Stage": {
+    "lat": 12.970127,
+    "lng": 77.644599
+  },
+  "Infantry Road": {
+    "lat": 12.980006,
+    "lng": 77.605001
+  },
+  "Ittamadu": {
+    "lat": 12.923359,
+    "lng": 77.54187
+  },
+  "J C Nagar": {
+    "lat": 13.006983,
+    "lng": 77.592825
+  },
+  "JCR Layout": {
+    "lat": 12.933134,
+    "lng": 77.704328
+  },
+  "JP Nagar": {
+    "lat": 12.909694,
+    "lng": 77.586607
+  },
+  "JP Nagar 7th Phase,": {
+    "lat": 12.911842,
+    "lng": 77.587067
+  },
+  "JP Nagar 8th Phase,": {
+    "lat": 12.910406,
+    "lng": 77.59511
+  },
+  "JP nagar 9th Phase,": {
+    "lat": 12.868142,
+    "lng": 77.562822
+  },
+  "Jagadish Nagar": {
+    "lat": 12.96508,
+    "lng": 77.664652
+  },
+  "Jai Bheema Nagar": {
+    "lat": 12.919429,
+    "lng": 77.616976
+  },
+  "Jakkasandra": {
+    "lat": 12.920683,
+    "lng": 77.63571
+  },
+  "Jakkasandra Extension": {
+    "lat": 12.927699,
+    "lng": 77.64098
+  },
+  "Jakkur": {
+    "lat": 13.078474,
+    "lng": 77.606894
+  },
+  "Jakkur Plantation": {
+    "lat": 13.08346,
+    "lng": 77.598002
+  },
+  "Jakkuru Layout": {
+    "lat": 13.076389,
+    "lng": 77.605727
+  },
+  "Jalahalli": {
+    "lat": 13.03941,
+    "lng": 77.519735
+  },
+  "Jalahalli East": {
+    "lat": 13.067787,
+    "lng": 77.544564
+  },
+  "Jalahalli West": {
+    "lat": 13.053333,
+    "lng": 77.530604
+  },
+  "Janatha Colony": {
+    "lat": 12.869481,
+    "lng": 77.69608
+  },
+  "Jayamahal": {
+    "lat": 12.995988,
+    "lng": 77.601404
+  },
+  "Jayamahal Extension": {
+    "lat": 13.001106,
+    "lng": 77.596958
+  },
+  "Jayanagar": {
+    "lat": 12.929273,
+    "lng": 77.582423
+  },
+  "Jayanagar,": {
+    "lat": 12.929273,
+    "lng": 77.582423
+  },
+  "Jayanti Nagar": {
+    "lat": 13.062888,
+    "lng": 77.64334
+  },
+  "Jigani": {
+    "lat": 12.775619,
+    "lng": 77.632466
+  },
+  "Jogupalya": {
+    "lat": 12.974688,
+    "lng": 77.628026
+  },
+  "Jp nagar 8th Phase .": {
+    "lat": 12.910406,
+    "lng": 77.59511
+  },
+  "Judicial Layout": {
+    "lat": 13.083769,
+    "lng": 77.586044
+  },
+  "Judicial Layout, Kanakapura Road,": {
+    "lat": 12.861669,
+    "lng": 77.530162
+  },
+  "Junnasandra": {
+    "lat": 12.90642,
+    "lng": 77.683516
+  },
+  "Jyothi Nagar": {
+    "lat": 12.864146,
+    "lng": 77.581719
+  },
+  "K G Colony": {
+    "lat": 13.027497,
+    "lng": 77.586999
+  },
+  "K N Extension": {
+    "lat": 13.008963,
+    "lng": 77.571139
+  },
+  "KEB Colony": {
+    "lat": 12.934766,
+    "lng": 77.568574
+  },
+  "KG Halli": {
+    "lat": 13.056861,
+    "lng": 77.532705
+  },
+  "KPC Layout": {
+    "lat": 12.904186,
+    "lng": 77.677852
+  },
+  "KR Garden": {
+    "lat": 12.954921,
+    "lng": 77.656597
+  },
+  "KR Layout": {
+    "lat": 12.954984,
+    "lng": 77.653294
+  },
+  "KR Puram": {
+    "lat": 13.007516,
+    "lng": 77.695935
+  },
+  "KSRTC Layout": {
+    "lat": 12.912839,
+    "lng": 77.593493
+  },
+  "KUDLU MAIN ROAD": {
+    "lat": 12.892181,
+    "lng": 77.648336
+  },
+  "Kachanayakanahalli": {
+    "lat": 12.79903,
+    "lng": 77.683052
+  },
+  "Kacharakanahalli": {
+    "lat": 13.022207,
+    "lng": 77.631909
+  },
+  "Kada Agrahara": {
+    "lat": 13.081505,
+    "lng": 77.69505
+  },
+  "Kadabagere": {
+    "lat": 12.985771,
+    "lng": 77.478945
+  },
+  "Kadarenahalli": {
+    "lat": 12.911918,
+    "lng": 77.564667
+  },
+  "Kadubeesanahalli": {
+    "lat": 12.937595,
+    "lng": 77.70107
+  },
+  "Kadugodi": {
+    "lat": 12.995743,
+    "lng": 77.757949
+  },
+  "Kadugondanahalli": {
+    "lat": 13.020703,
+    "lng": 77.621546
+  },
+  "Kaggadasapura": {
+    "lat": 12.981226,
+    "lng": 77.674584
+  },
+  "Kaggalipura": {
+    "lat": 12.808959,
+    "lng": 77.509701
+  },
+  "Kaikondrahalli": {
+    "lat": 12.913835,
+    "lng": 77.677527
+  },
+  "Kalasipalya": {
+    "lat": 12.958455,
+    "lng": 77.580824
+  },
+  "Kalena Agrahara": {
+    "lat": 12.865807,
+    "lng": 77.591192
+  },
+  "Kalhalli": {
+    "lat": 12.880357,
+    "lng": 77.770854
+  },
+  "Kalkere": {
+    "lat": 13.034445,
+    "lng": 77.676678
+  },
+  "Kalkere Channasandra": {
+    "lat": 13.038802,
+    "lng": 77.68107
+  },
+  "Kalyan nagar": {
+    "lat": 13.022142,
+    "lng": 77.640337
+  },
+  "Kamakshipalya": {
+    "lat": 12.985867,
+    "lng": 77.533175
+  },
+  "Kamakya Layout": {
+    "lat": 12.923967,
+    "lng": 77.549266
+  },
+  "Kamala Nagar": {
+    "lat": 12.945054,
+    "lng": 77.558649
+  },
+  "Kambipura": {
+    "lat": 12.882271,
+    "lng": 77.460647
+  },
+  "Kamdhenu Nagar": {
+    "lat": 12.996026,
+    "lng": 77.686457
+  },
+  "Kammanahalli": {
+    "lat": 13.014854,
+    "lng": 77.638203
+  },
+  "Kammasandra": {
+    "lat": 13.079198,
+    "lng": 77.713637
+  },
+  "Kanaka Nagar": {
+    "lat": 13.037411,
+    "lng": 77.608206
+  },
+  "Kanakadasa Layout": {
+    "lat": 12.982301,
+    "lng": 77.58966
+  },
+  "Kanakapura": {
+    "lat": 12.867873,
+    "lng": 77.535693
+  },
+  "Kanakapura Main Road": {
+    "lat": 12.942135,
+    "lng": 77.576844
+  },
+  "Kanakapura Road": {
+    "lat": 12.86934,
+    "lng": 77.536647
+  },
+  "Kanakapura Road,": {
+    "lat": 12.86934,
+    "lng": 77.536647
+  },
+  "Kanakapura main  Road": {
+    "lat": 12.942135,
+    "lng": 77.576844
+  },
+  "Kanakpura Road": {
+    "lat": 12.885691,
+    "lng": 77.552656
+  },
+  "Kannamangala": {
+    "lat": 13.015551,
+    "lng": 77.763034
+  },
+  "Kannur": {
+    "lat": 13.101404,
+    "lng": 77.635654
+  },
+  "Kariyammana Agrahara": {
+    "lat": 12.93715,
+    "lng": 77.687303
+  },
+  "Karuna Nagar": {
+    "lat": 12.921008,
+    "lng": 77.587868
+  },
+  "Kasavanhalli": {
+    "lat": 12.90476,
+    "lng": 77.675917
+  },
+  "Kashi Nagar": {
+    "lat": 13.00846,
+    "lng": 77.660926
+  },
+  "Kasturi Nagar": {
+    "lat": 13.001528,
+    "lng": 77.651236
+  },
+  "Kathriguppe": {
+    "lat": 12.929217,
+    "lng": 77.549692
+  },
+  "Kattigenahalli": {
+    "lat": 13.117774,
+    "lng": 77.626122
+  },
+  "Kaval Byrasandra": {
+    "lat": 13.020024,
+    "lng": 77.609289
+  },
+  "Kaverappa Layout": {
+    "lat": 12.936789,
+    "lng": 77.698059
+  },
+  "Kaveri Nagar": {
+    "lat": 13.032613,
+    "lng": 77.609617
+  },
+  "Keerthi Layout": {
+    "lat": 12.79633,
+    "lng": 77.710109
+  },
+  "Kempapura": {
+    "lat": 13.04789,
+    "lng": 77.609631
+  },
+  "Kempegowda Nagar": {
+    "lat": 13.002574,
+    "lng": 77.525681
+  },
+  "Kenchenahalli": {
+    "lat": 12.926791,
+    "lng": 77.513298
+  },
+  "Kengeri": {
+    "lat": 12.917657,
+    "lng": 77.483757
+  },
+  "Kengeri Satellite Town": {
+    "lat": 12.922973,
+    "lng": 77.484293
+  },
+  "Kengeri Satellite Town Stage II": {
+    "lat": 12.937227,
+    "lng": 77.492581
+  }
+}

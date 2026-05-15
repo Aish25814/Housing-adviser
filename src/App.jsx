@@ -3,6 +3,8 @@ import { COLORS, COMPANIES } from "./data/constants.js";
 import { useHouses } from "./data/houseData.js";
 import RAGChatBot from "./components/RAGChatBot.jsx";
 import RealMap from "./components/RealMap.jsx";
+import AreaReport from "./components/AreaReport.jsx";
+import VisualizeArea from "./components/VisualizeArea.jsx";
 import { getWaterRisk } from "./data/constants.js";
 
 const ANTHROPIC_MODEL = "claude-sonnet-4-20250514";
@@ -151,7 +153,7 @@ function saveComments(houseId, comments) {
 }
 
 // ─── Result Card ─────────────────────────────────────────────────────────────
-function HouseCard({ house, rank, onView }) {
+function HouseCard({ house, rank, onView, onReport }) {
   const [imgIdx, setImgIdx] = useState(0);
   const [imgError, setImgError] = useState(false);
   const [comments, setComments] = useState(() => loadComments(house.id));
@@ -290,6 +292,9 @@ function HouseCard({ house, rank, onView }) {
         <button onClick={() => onView(house)} style={{ width: "100%", padding: "9px", background: COLORS.primary, color: "#fff", border: "none", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
           View on Map
         </button>
+        <button onClick={() => onReport(house)} style={{ width: "100%", padding: "9px", background: "transparent", color: COLORS.primary, border: `1.5px solid ${COLORS.primary}`, borderRadius: 10, cursor: "pointer", fontWeight: 700, fontSize: 13, marginTop: 6, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          📊 View Area Report
+        </button>
 
         {/* ── Comments Section ── */}
         <div style={{ marginTop: 10 }}>
@@ -344,6 +349,7 @@ export default function App() {
   const [tab, setTab] = useState("chat");
   const [results, setResults] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [reportHouse, setReportHouse] = useState(null);
 
   const [allHouses, setAllHouses] = useState(() => {
     const saved = localStorage.getItem("my_listed_houses");
@@ -364,6 +370,11 @@ export default function App() {
     const userHouses = saved ? JSON.parse(saved) : [];
     localStorage.setItem("my_listed_houses", JSON.stringify([...userHouses, houseWithId]));
   };
+
+  // ── Area Report page ──────────────────────────────────────────────────────
+  if (reportHouse) return (
+    <AreaReport house={reportHouse} houses={houses} onBack={() => setReportHouse(null)} />
+  );
 
   if (screen === "splash") return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(135deg, ${COLORS.primary} 0%, #0D2438 100%)`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
@@ -416,7 +427,7 @@ export default function App() {
       </div>
 
       <div style={{ display: "flex", background: "#fff", borderBottom: `1px solid ${COLORS.border}` }}>
-        {[{ key: "chat", label: "🤖 AI Chat" }, { key: "results", label: `📋 Results${results.length ? ` (${results.length})` : ""}` }, { key: "map", label: "🗺️ Map" }].map(t => (
+        {[{ key: "chat", label: "🤖 AI Chat" }, { key: "results", label: `📋 Results${results.length ? ` (${results.length})` : ""}` }, { key: "map", label: "🗺️ Map" }, { key: "visualize", label: "📊 Visualize" }].map(t => (
           <button key={t.key} onClick={() => setTab(t.key)} style={{ flex: 1, padding: "11px 4px", border: "none", borderBottom: tab === t.key ? `2.5px solid ${COLORS.primary}` : "2.5px solid transparent", background: "none", color: tab === t.key ? COLORS.primary : COLORS.muted, fontWeight: tab === t.key ? 700 : 400, fontSize: 12, cursor: "pointer" }}>
             {t.label}
           </button>
@@ -444,7 +455,7 @@ export default function App() {
                 <div style={{ background: "#EEF7FF", border: "1px solid #B0D4F5", borderRadius: 10, padding: "10px 14px", marginBottom: 14, fontSize: 13, color: "#1A5C9E" }}>
                   🎯 Top {results.length} matches from {houses.length.toLocaleString()} real Bangalore listings
                 </div>
-                {results.map((h, i) => <HouseCard key={h.id} house={h} rank={i + 1} onView={() => setTab("map")} />)}
+                {results.map((h, i) => <HouseCard key={h.id} house={h} rank={i + 1} onView={() => setTab("map")} onReport={(house) => setReportHouse(house)} />)}
               </>
             )}
           </div>
@@ -468,6 +479,10 @@ export default function App() {
               </div>
             )}
           </div>
+        )}
+
+        {tab === "visualize" && (
+          <VisualizeArea />
         )}
       </div>
       <style>{`@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }`}</style>

@@ -32,6 +32,7 @@ export default function RealMap({ results, company }) {
   }, []);
 
   useEffect(() => {
+    let isActive = true;
     const map = instanceRef.current;
     const layer = layerRef.current;
     if (!map || !layer) return;
@@ -83,13 +84,38 @@ export default function RealMap({ results, company }) {
       `;
 
       L.marker([h.jLat, h.jLng], { icon }).addTo(layer).bindPopup(popupHtml);
-      L.polyline([[company.lat, company.lng], [h.jLat, h.jLng]], {
-        color: c, weight: i === 0 ? 2 : 1, opacity: i === 0 ? 0.7 : 0.35, dashArray: "4 6",
-      }).addTo(layer);
+      
+      // Fetch real road route from OSRM
+      fetch(`https://router.project-osrm.org/route/v1/driving/${company.lng},${company.lat};${h.jLng},${h.jLat}?overview=full&geometries=geojson`)
+        .then(res => res.json())
+        .then(data => {
+          if (!isActive) return;
+          if (data.routes && data.routes.length > 0) {
+            L.geoJSON(data.routes[0].geometry, {
+              style: {
+                color: c,
+                weight: i === 0 ? 6 : 4,
+                opacity: 1.0,
+                dashArray: ""
+              }
+            }).addTo(layer);
+          } else {
+            throw new Error("No routes found");
+          }
+        })
+        .catch(() => {
+          if (!isActive) return;
+          L.polyline([[company.lat, company.lng], [h.jLat, h.jLng]], {
+            color: c, weight: i === 0 ? 3 : 2, opacity: i === 0 ? 0.7 : 0.4, dashArray: "4 6",
+          }).addTo(layer);
+        });
+
       bounds.push([h.jLat, h.jLng]);
     });
 
     map.fitBounds(bounds, { padding: [50, 50] });
+
+    return () => { isActive = false; };
   }, [results, company]);
 
   return (

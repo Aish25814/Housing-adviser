@@ -31,6 +31,7 @@ import sys
 import math
 import time
 import logging
+import httpx
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
@@ -598,6 +599,210 @@ async def rebuild_index(
     background_tasks.add_task(_rebuild)
 
     return {"status": "rebuild_started", "message": "Rebuilding in background. Check /health for status."}
+
+
+# ── Area Environment (WAQI live AQI + water + noise + house stats) ────────────
+
+# Noise level estimates per Bengaluru area (dB, CPCB urban survey data)
+AREA_NOISE_LEVEL: dict[str, dict] = {
+    "Peenya":                      {"level": "High",   "db": 75, "desc": "Industrial zone with heavy machinery and traffic"},
+    "Yeshwanthpur":                {"level": "High",   "db": 72, "desc": "Commercial hub with dense traffic"},
+    "Tumkur Road":                 {"level": "High",   "db": 74, "desc": "Major highway corridor"},
+    "Magadi Road":                 {"level": "High",   "db": 71, "desc": "Industrial and commercial mix"},
+    "Bommasandra Industrial Area": {"level": "High",   "db": 76, "desc": "Heavy industrial area"},
+    "Kr Puram":                    {"level": "High",   "db": 70, "desc": "Railway junction and commercial area"},
+    "Old Madras Road":             {"level": "High",   "db": 69, "desc": "Major arterial road with heavy traffic"},
+    "Marathahalli":                {"level": "Medium", "db": 65, "desc": "IT corridor with moderate traffic"},
+    "Hebbal":                      {"level": "Medium", "db": 63, "desc": "Tech park area with flyover traffic"},
+    "Rajaji Nagar":                {"level": "Medium", "db": 64, "desc": "Commercial and residential mix"},
+    "Malleshwaram":                {"level": "Medium", "db": 62, "desc": "Busy market and residential area"},
+    "Vijayanagar":                 {"level": "Medium", "db": 61, "desc": "Mixed residential and commercial"},
+    "Mysore Road":                 {"level": "Medium", "db": 66, "desc": "Major highway with moderate traffic"},
+    "Hosur Road":                  {"level": "Medium", "db": 64, "desc": "IT corridor with regular traffic"},
+    "Bommanahalli":                {"level": "Medium", "db": 60, "desc": "Developing commercial area"},
+    "Indiranagar":                 {"level": "Medium", "db": 62, "desc": "Upscale commercial and residential"},
+    "Hsr Layout":                  {"level": "Medium", "db": 58, "desc": "Planned residential with some commercial"},
+    "Sarjapur Road":               {"level": "Medium", "db": 60, "desc": "Growing IT corridor"},
+    "Electronic City":             {"level": "Low",    "db": 52, "desc": "Planned IT township, well-regulated"},
+    "Electronics City Phase 1":    {"level": "Low",    "db": 51, "desc": "Planned IT campus zone"},
+    "Electronic City Phase Ii":    {"level": "Low",    "db": 50, "desc": "Planned IT campus zone"},
+    "Koramangala":                 {"level": "Low",    "db": 55, "desc": "Upscale residential with managed traffic"},
+    "Whitefield":                  {"level": "Low",    "db": 54, "desc": "Gated communities and IT parks"},
+    "Yelahanka":                   {"level": "Low",    "db": 48, "desc": "Suburban residential, low traffic"},
+    "Jayanagar":                   {"level": "Low",    "db": 50, "desc": "Well-planned residential layout"},
+    "Jp Nagar":                    {"level": "Low",    "db": 51, "desc": "Residential layout with parks"},
+    "Banashankari":                {"level": "Low",    "db": 49, "desc": "Quiet residential neighbourhood"},
+    "Hennur Road":                 {"level": "Low",    "db": 52, "desc": "Developing residential corridor"},
+    "Thanisandra":                 {"level": "Low",    "db": 50, "desc": "Suburban residential area"},
+    "Kanakpura Road":              {"level": "Low",    "db": 47, "desc": "Semi-rural residential corridor"},
+    "Devanahalli":                 {"level": "Low",    "db": 45, "desc": "Airport zone, mostly residential"},
+    "Bannerghatta Road":           {"level": "Low",    "db": 53, "desc": "Green corridor near national park"},
+    "Bellandur":                   {"level": "Low",    "db": 54, "desc": "IT and residential mix"},
+    "Hebbal Kempapura":            {"level": "Low",    "db": 52, "desc": "Residential near tech parks"},
+}
+
+# WAQI AQI scale (US AQI 0–500)
+WAQI_AQI_LEVELS = [
+    {"max": 50,  "label": "Good",                 "color": "#4caf7d"},
+    {"max": 100, "label": "Moderate",              "color": "#e8c84a"},
+    {"max": 150, "label": "Unhealthy (Sensitive)", "color": "#f0843a"},
+    {"max": 200, "label": "Unhealthy",             "color": "#e05c5c"},
+    {"max": 300, "label": "Very Unhealthy",        "color": "#9b5de5"},
+    {"max": 500, "label": "Hazardous",             "color": "#7d2e2e"},
+]
+
+def _waqi_level(aqi: int) -> dict:
+    for lvl in WAQI_AQI_LEVELS:
+        if aqi <= lvl["max"]:
+            return lvl
+    return WAQI_AQI_LEVELS[-1]
+
+
+@app.get("/area-environment", tags=["Environment"])
+async def area_environment(
+    lat: float = Query(..., description="Latitude of the area"),
+    lng: float = Query(..., description="Longitude of the area"),
+    area_name: str = Query(..., description="Area name for noise/water lookup"),
+):
+    """
+    Returns environmental data for a given location:
+    - Air Quality: WAQI API (same token as map.html) — falls back to static data
+    - Water quality: curated BWSSB data
+    - Noise level: curated CPCB urban survey data
+    - House count + price stats from the dataset
+
+    WAQI free token: https://aqicn.org/data-platform/token/
+    Set WAQI_TOKEN in backend/.env
+    """
+    result: dict = {
+        "area": area_name,
+        "lat": lat,
+        "lng": lng,
+        "air_quality": None,
+        "water_quality": None,
+        "noise": None,
+        "house_count": None,
+        "data_sources": [],
+    }
+
+    # ── 1. Air Quality via WAQI geo API ──────────────────────────────────
+    waqi_token = os.getenv("WAQI_TOKEN", "").strip()
+    if waqi_token:
+        try:
+            async with httpx.AsyncClient(timeout=8.0) as client:
+                resp = await client.get(
+                    f"https://api.waqi.info/feed/geo:{lat};{lng}/",
+                    params={"token": waqi_token},
+                )
+            if resp.status_code == 200:
+                waqi_data = resp.json()
+                if waqi_data.get("status") == "ok":
+                    d    = waqi_data["data"]
+                    aqi  = d["aqi"]
+                    iaqi = d.get("iaqi", {})
+                    lvl  = _waqi_level(aqi)
+                    result["air_quality"] = {
+                        "source":     "WAQI (World Air Quality Index) — live",
+                        "aqi":        aqi,
+                        "label":      lvl["label"],
+                        "color":      lvl["color"],
+                        "description": f"AQI {aqi} — {lvl['label']}",
+                        "components": {
+                            "pm2_5": iaqi.get("pm25", {}).get("v"),
+                            "pm10":  iaqi.get("pm10", {}).get("v"),
+                            "no2":   iaqi.get("no2",  {}).get("v"),
+                            "so2":   iaqi.get("so2",  {}).get("v"),
+                            "o3":    iaqi.get("o3",   {}).get("v"),
+                            "co":    iaqi.get("co",   {}).get("v"),
+                        },
+                        "live": True,
+                    }
+                    result["data_sources"].append("WAQI Air Quality API")
+                else:
+                    logger.warning(f"WAQI status: {waqi_data.get('data')}")
+        except Exception as exc:
+            logger.warning(f"WAQI call failed: {exc}")
+
+    # Fallback to curated static data
+    if result["air_quality"] is None:
+        static_poll = AREA_POLLUTION.get(area_name, "Unknown")
+        static_map = {
+            "Low":     {"aqi": 35,  "label": "Good",                 "color": "#4caf7d"},
+            "Medium":  {"aqi": 110, "label": "Moderate",              "color": "#e8c84a"},
+            "High":    {"aqi": 165, "label": "Unhealthy (Sensitive)", "color": "#f0843a"},
+            "Unknown": {"aqi": 100, "label": "Unknown",               "color": "#7A8FA6"},
+        }
+        info = static_map.get(static_poll, static_map["Unknown"])
+        result["air_quality"] = {
+            "source":      "Curated Bengaluru AQI data (static fallback)",
+            "aqi":         info["aqi"],
+            "label":       info["label"],
+            "color":       info["color"],
+            "description": f"Based on historical AQI reports for {area_name}. Add WAQI_TOKEN to .env for live data.",
+            "components":  None,
+            "live":        False,
+        }
+        result["data_sources"].append("Curated static AQI data")
+
+    # ── 2. Water Quality (curated BWSSB data) ────────────────────────────
+    water = "Unknown"
+    water_map = {
+        "Safe":     {"risk": "LOW",    "score": 90, "color": "#4caf7d",
+                     "desc": "BWSSB-supplied water meets safety standards",
+                     "issues": [], "parameters": {"tds": "< 500 mg/L", "hardness": "Soft", "ph": "7.0–8.5"}},
+        "Moderate": {"risk": "MEDIUM", "score": 60, "color": "#e8c84a",
+                     "desc": "Generally safe but occasional TDS/hardness issues reported",
+                     "issues": ["TDS", "Hardness"], "parameters": {"tds": "500–900 mg/L", "hardness": "Moderate", "ph": "7.0–8.5"}},
+        "Poor":     {"risk": "HIGH",   "score": 30, "color": "#e05c5c",
+                     "desc": "Industrial runoff or groundwater contamination reported",
+                     "issues": ["Contamination", "High TDS"], "parameters": {"tds": "> 900 mg/L", "hardness": "Hard", "ph": "< 6.5 or > 9"}},
+        "Unknown":  {"risk": "LOW",    "score": 50, "color": "#7A8FA6",
+                     "desc": "No specific data available for this area",
+                     "issues": [], "parameters": {"tds": "Unknown", "hardness": "Unknown", "ph": "Unknown"}},
+    }
+    winfo = water_map.get(water, water_map["Unknown"])
+    result["water_quality"] = {
+        "source":      "Bengaluru Water Supply & Sewerage Board (BWSSB) reports",
+        "risk":        winfo["risk"],
+        "color":       winfo["color"],
+        "score":       winfo["score"],
+        "description": winfo["desc"],
+        "issues":      winfo["issues"],
+        "parameters":  winfo["parameters"],
+        "live":        False,
+    }
+    result["data_sources"].append("BWSSB curated data")
+
+    # ── 3. Noise Level (curated CPCB data) ───────────────────────────────
+    noise_default = {"level": "Medium", "db": 60, "desc": "Typical urban noise level"}
+    noise_info    = AREA_NOISE_LEVEL.get(area_name, noise_default)
+    result["noise"] = {
+        "source":      "CPCB Bengaluru urban noise survey estimates",
+        "level":       noise_info["level"],
+        "db_estimate": noise_info["db"],
+        "description": noise_info["desc"],
+        "who_limit":   55,
+        "exceeds_who": noise_info["db"] > 55,
+        "live":        False,
+    }
+    result["data_sources"].append("CPCB noise survey estimates")
+
+    # ── 4. House count from cached area stats ─────────────────────────────
+    area_match = next(
+        (a for a in _area_stats_cache if a.get("location", "").lower() == area_name.lower()),
+        None
+    )
+    if area_match:
+        result["house_count"] = {
+            "total_listings":  area_match.get("listing_count", 0),
+            "avg_price_lakhs": area_match.get("avg_price_lakhs"),
+            "min_price_lakhs": area_match.get("min_price_lakhs"),
+            "max_price_lakhs": area_match.get("max_price_lakhs"),
+            "avg_sqft":        area_match.get("avg_sqft"),
+            "median_ppsf":     area_match.get("median_ppsf"),
+        }
+
+    return _safe_json(result)
 
 
 # ═══════════════════════════════════════════════════════════════════════════

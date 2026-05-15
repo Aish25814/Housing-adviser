@@ -7,11 +7,11 @@ import { retrieveCandidates, getStaticAqi } from "../data/houseData.js";
 
 const CHAT_STEPS = [
   { key: "area",      question: "Welcome! 🏠 I'm your smart house-finding assistant. Let's find your perfect home in Bangalore!\n\nWhich area of Bangalore are you looking to rent in?\n(e.g., Koramangala, Indiranagar, Whitefield, Jayanagar, or 'anywhere')" },
-  { key: "budget",    question: "Great choice! 💰 What is your monthly rent budget?\n\nPlease share a range like '10-20 lakhs' or a max amount like 'under 15 lakhs'." },
+  { key: "budget",    question: "Great choice! 💰 What is your yearly budget in Lakhs?\n\nPlease share a range like '50-100' or a max amount like 'under 80'." },
   { key: "bhk",       question: "Perfect! 🛏️ How many bedrooms do you need?\n(1BHK / 2BHK / 3BHK / 4BHK or more)" },
   { key: "amenities", question: "Nice! 🏊 What amenities are important to you?\n\nChoose from: AC, Parking, Gym, Swimming Pool, Garden, Lift, Security, Power Backup.\n\n(You can list multiple, or say 'basic only')" },
   { key: "health",    question: "Almost there! 🏥 Do you have any health considerations?\n\nSupported: asthma, COPD, heart condition, kidney issues, allergy, neurological, respiratory, cancer risk.\n\n(Or type 'none' if not applicable)" },
-  { key: "company",   question: "Last question! 🏢 What is the location of your workplace/office in Bangalore?\n\n(e.g., Koramangala, Electronic City, Whitefield — or type 'not applicable')" },
+  { key: "company",   question: "Last question! 🏢 Where is your workplace in Bangalore?\n\nYou can tell me either:\n• The company name (e.g., Infosys, Wipro, Google, Swiggy)\n• Or the area/locality (e.g., Koramangala, Electronic City, Whitefield)\n\n(Type 'not applicable' if you work from home)" },
 ];
 
 // ── Noise helper ──────────────────────────────────────────────────────────────
@@ -78,8 +78,17 @@ function parseBhk(text) {
 }
 
 function findCompany(text) {
-  const t = text.toLowerCase();
-  return COMPANIES.find(c => t.includes(c.name.toLowerCase()) || t.includes(c.area.toLowerCase())) || null;
+  const t = text.toLowerCase().trim();
+  // 1. Match by company name or known area
+  const match = COMPANIES.find(c =>
+    t.includes(c.name.toLowerCase()) || t.includes(c.area.toLowerCase())
+  );
+  if (match) return match;
+  // 2. If user typed a raw area (e.g. "Bellandur"), synthesise a coord object
+  //    by finding the first company in that area
+  const areaMatch = COMPANIES.find(c => c.area.toLowerCase().includes(t) || t.includes(c.area.toLowerCase()));
+  if (areaMatch) return areaMatch;
+  return null;
 }
 
 // ── Health-aware scoring ──────────────────────────────────────────────────────

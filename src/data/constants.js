@@ -91,6 +91,65 @@ export function haversine(lat1, lng1, lat2, lng2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+// ── Nearest hospital & police station per area ────────────────────────────────
+export const AREA_SERVICES = {
+  "Koramangala":          { hospital: "Manipal Hospital (HAL Airport Rd)", police: "Koramangala Police Station" },
+  "Indiranagar":          { hospital: "Manipal Hospital (HAL Airport Rd)", police: "Indiranagar Police Station" },
+  "HSR Layout":           { hospital: "Narayana Multispeciality Hospital", police: "HSR Layout Police Station" },
+  "Hsr Layout":           { hospital: "Narayana Multispeciality Hospital", police: "HSR Layout Police Station" },
+  "Bellandur":            { hospital: "Sakra World Hospital", police: "Bellandur Police Station" },
+  "Sarjapur":             { hospital: "Sakra World Hospital", police: "Sarjapur Police Station" },
+  "Sarjapur Road":        { hospital: "Sakra World Hospital", police: "Sarjapur Police Station" },
+  "Whitefield":           { hospital: "Manipal Hospital Whitefield", police: "Whitefield Police Station" },
+  "Marathahalli":         { hospital: "Columbia Asia Hospital Whitefield", police: "Marathahalli Police Station" },
+  "Electronic City":      { hospital: "Narayana Health City", police: "Electronic City Police Station" },
+  "Electronics City":     { hospital: "Narayana Health City", police: "Electronic City Police Station" },
+  "Jayanagar":            { hospital: "Apollo BGS Hospital", police: "Jayanagar Police Station" },
+  "JP Nagar":             { hospital: "Apollo BGS Hospital", police: "JP Nagar Police Station" },
+  "Jp Nagar":             { hospital: "Apollo BGS Hospital", police: "JP Nagar Police Station" },
+  "Banashankari":         { hospital: "Apollo BGS Hospital", police: "Banashankari Police Station" },
+  "Bannerghatta Road":    { hospital: "Apollo BGS Hospital", police: "Bannerghatta Police Station" },
+  "Hebbal":               { hospital: "Columbia Asia Hospital Hebbal", police: "Hebbal Police Station" },
+  "Hebbal Kempapura":     { hospital: "Columbia Asia Hospital Hebbal", police: "Hebbal Police Station" },
+  "Yelahanka":            { hospital: "Aster CMI Hospital", police: "Yelahanka Police Station" },
+  "Thanisandra":          { hospital: "Aster CMI Hospital", police: "Thanisandra Police Station" },
+  "Hennur Road":          { hospital: "Aster CMI Hospital", police: "Hennur Police Station" },
+  "Malleshwaram":         { hospital: "Fortis Hospital Rajajinagar", police: "Malleshwaram Police Station" },
+  "Rajaji Nagar":         { hospital: "Fortis Hospital Rajajinagar", police: "Rajajinagar Police Station" },
+  "Yeshwanthpur":         { hospital: "Fortis Hospital Rajajinagar", police: "Yeshwanthpur Police Station" },
+  "Peenya":               { hospital: "Fortis Hospital Rajajinagar", police: "Peenya Police Station" },
+  "Tumkur Road":          { hospital: "Fortis Hospital Rajajinagar", police: "Peenya Police Station" },
+  "Magadi Road":          { hospital: "Fortis Hospital Rajajinagar", police: "Magadi Road Police Station" },
+  "Vijayanagar":          { hospital: "Fortis Hospital Rajajinagar", police: "Vijayanagar Police Station" },
+  "Mysore Road":          { hospital: "BGS Gleneagles Global Hospital", police: "Mysore Road Police Station" },
+  "Kanakpura Road":       { hospital: "BGS Gleneagles Global Hospital", police: "Kanakapura Police Station" },
+  "Bommanahalli":         { hospital: "Narayana Multispeciality Hospital", police: "Bommanahalli Police Station" },
+  "Hosur Road":           { hospital: "Narayana Health City", police: "Bommanahalli Police Station" },
+  "Marathahalli":         { hospital: "Columbia Asia Hospital Whitefield", police: "Marathahalli Police Station" },
+  "KR Puram":             { hospital: "Manipal Hospital Whitefield", police: "KR Puram Police Station" },
+  "Kr Puram":             { hospital: "Manipal Hospital Whitefield", police: "KR Puram Police Station" },
+  "Old Madras Road":      { hospital: "Manipal Hospital Whitefield", police: "KR Puram Police Station" },
+  "Devanahalli":          { hospital: "Columbia Asia Hospital Hebbal", police: "Devanahalli Police Station" },
+  "Bommasandra":          { hospital: "Narayana Health City", police: "Electronic City Police Station" },
+  "Domlur":               { hospital: "Manipal Hospital (HAL Airport Rd)", police: "Indiranagar Police Station" },
+  "Varthur":              { hospital: "Manipal Hospital Whitefield", police: "Varthur Police Station" },
+};
+
+const DEFAULT_SERVICES = { hospital: "Nearest Government Hospital", police: "Nearest Police Station" };
+
+/**
+ * Returns { hospital, police } for a given location string.
+ * Falls back to generic labels if the area isn't in the lookup.
+ */
+export function getNearbyServices(loc) {
+  if (!loc) return DEFAULT_SERVICES;
+  const locLower = loc.toLowerCase();
+  for (const [area, services] of Object.entries(AREA_SERVICES)) {
+    if (locLower.includes(area.toLowerCase())) return services;
+  }
+  return DEFAULT_SERVICES;
+}
+
 // ── Disease → pollutant sensitivity map (from map.html) ──────────────────────
 // Which air pollutants and water contaminants are dangerous per condition
 export const DISEASE_POLLUTANTS = {

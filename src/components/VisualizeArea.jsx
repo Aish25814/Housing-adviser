@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
 import { getWaterRisk, AREA_NOISE_LEVEL, COLORS, POLLUTANT_META, DISEASE_POLLUTANTS } from "../data/constants.js";
 
 const AREA_STATIC_AQI = {
@@ -31,11 +31,9 @@ function getNoiseDb(loc) {
   return 60;
 }
 
-// Deterministically mock pollutant levels based on base AQI
 function generatePollutants(aqi, loc) {
-  const jitter = (loc.length % 5) / 10; // 0 to 0.4
+  const jitter = (loc.length % 5) / 10;
   const factor = aqi / 150; 
-  
   const raw = {
     pm25: factor * POLLUTANT_META.pm25.danger * (1 + jitter*0.2),
     pm10: factor * POLLUTANT_META.pm10.danger * (0.8 + jitter*0.3),
@@ -52,11 +50,8 @@ function buildPollutantChartData(raw, avgRaw) {
     const meta = POLLUTANT_META[p];
     const val = raw[p];
     const avgVal = avgRaw[p];
-    
-    // Normalize: danger threshold = 70% on radar
     const norm = Math.min(100, (val / meta.danger) * 70);
     const avgNorm = Math.min(100, (avgVal / meta.danger) * 70);
-    
     return {
       subject: meta.label,
       Area: Math.round(norm),
@@ -83,19 +78,14 @@ function predictDiseases(rawPollutants) {
       risks.push({ name, triggers });
     }
   }
-  return risks;
+  return risks.slice(0, 2); // Top 2 diseases as requested
 }
 
-// Generate targeted recommendations based on area's environment
 function getRecommendations(raw) {
   const isBadAir = raw.aqi > 100;
   const isBadNoise = raw.noise > 65;
   const isBadWater = raw.water === "HIGH" || raw.water === "MEDIUM";
-
-  const society = [];
-  const gov = [];
-  const personal = [];
-
+  const society = []; const gov = []; const personal = [];
   if (isBadAir) {
     society.push("Organize carpooling groups to reduce local vehicular emissions.");
     society.push("Plant native broad-leaf trees in community spaces to act as dust screens.");
@@ -106,13 +96,11 @@ function getRecommendations(raw) {
   } else {
     society.push("Maintain existing green belts and parks to preserve the good air quality.");
   }
-
   if (isBadNoise) {
     society.push("Enforce strict silent hours (10 PM - 6 AM) within residential layouts.");
     gov.push("Install noise barriers along adjacent major highways or flyovers.");
     personal.push("Use acoustic sealants on windows and heavy curtains to block street noise.");
   }
-
   if (isBadWater) {
     society.push("Install community-level Reverse Osmosis (RO) or advanced filtration plants.");
     society.push("Implement strict rainwater harvesting to reduce dependence on contaminated groundwater.");
@@ -120,16 +108,12 @@ function getRecommendations(raw) {
     personal.push("Always boil or filter water before consumption. Do not rely solely on tap water.");
     personal.push("Check TDS levels regularly using a home TDS meter.");
   }
-
-  // Fallbacks if area is perfectly fine
   if (society.length === 0) society.push("Continue community cleanliness drives to maintain the excellent environment.");
   if (gov.length === 0) gov.push("Regularly monitor local environment metrics to ensure they stay within safe limits.");
   if (personal.length === 0) personal.push("Enjoy the safe environment, but stay prepared for seasonal changes.");
-
   return { society, gov, personal };
 }
 
-// Custom tooltip for pollutants to show raw values
 const PollutantTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
@@ -148,24 +132,36 @@ const PollutantTooltip = ({ active, payload }) => {
   return null;
 };
 
-export default function VisualizeArea() {
+export default function VisualizeArea({ houses = [] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [analyzedArea, setAnalyzedArea] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const cityAnalysis = React.useMemo(() => {
+    if (!houses.length) return { best: [], worst: [] };
+    const counts = {};
+    houses.forEach(h => { counts[h.loc] = (counts[h.loc] || 0) + 1; });
+    const allData = Object.entries(AREA_STATIC_AQI).map(([area, aqi]) => ({
+      area,
+      aqi,
+      housingCount: counts[area] || 0
+    }));
+    const sorted = [...allData].sort((a, b) => a.aqi - b.aqi);
+    return {
+      best: sorted.slice(0, 5),
+      worst: sorted.slice(-5).reverse()
+    };
+  }, [houses]);
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return;
-    
     const loc = searchQuery.trim();
     const aqi = getAqi(loc);
     const noise = getNoiseDb(loc);
     const water = getWaterRisk(loc);
-    
-    // Normalize primary environment chart
     const normAqi = Math.min(100, (aqi / 150) * 100);
     const normNoise = Math.min(100, ((noise - 30) / 50) * 100);
     const normWater = water.risk === "HIGH" ? 100 : water.risk === "MEDIUM" ? 60 : 20;
-
-    // Generate Pollutants & Diseases
     const rawPollutants = generatePollutants(aqi, loc);
     const avgRawPollutants = generatePollutants(80, "Bangalore");
     const pollutantChart = buildPollutantChartData(rawPollutants, avgRawPollutants);
@@ -214,13 +210,11 @@ export default function VisualizeArea() {
 
       {analyzedArea ? (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {/* Primary Environment Chart */}
           <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #EEF1F6", padding: 16 }}>
             <div style={{ textAlign: "center", marginBottom: 10 }}>
               <h3 style={{ margin: 0, color: "#1C2B3A" }}>{analyzedArea.name} vs Bangalore</h3>
               <div style={{ fontSize: 12, color: "#7A8FA6", marginTop: 4 }}>Macro Environment (Larger area = Worse)</div>
             </div>
-            
             <div style={{ width: "100%", height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={analyzedArea.chartData}>
@@ -236,13 +230,11 @@ export default function VisualizeArea() {
             </div>
           </div>
 
-          {/* Micro Pollutant Breakdown */}
           <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #EEF1F6", padding: 16 }}>
             <div style={{ textAlign: "center", marginBottom: 10 }}>
               <h3 style={{ margin: 0, color: "#1C2B3A" }}>Specific Pollutants</h3>
               <div style={{ fontSize: 12, color: "#7A8FA6", marginTop: 4 }}>PM2.5, PM10, Gases</div>
             </div>
-            
             <div style={{ width: "100%", height: 260 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart cx="50%" cy="50%" outerRadius="65%" data={analyzedArea.pollutantChart}>
@@ -258,7 +250,6 @@ export default function VisualizeArea() {
             </div>
           </div>
 
-          {/* Health Risks Panel */}
           <div style={{ background: "#FDF5F5", borderRadius: 16, border: "1px solid #FCD2D2", padding: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
               <span style={{ fontSize: 24 }}>🏥</span>
@@ -267,7 +258,6 @@ export default function VisualizeArea() {
                 <div style={{ fontSize: 11, color: "#C53030" }}>Aggravated by local pollution levels</div>
               </div>
             </div>
-
             {analyzedArea.diseases.length > 0 ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {analyzedArea.diseases.map((d, i) => (
@@ -291,7 +281,6 @@ export default function VisualizeArea() {
             )}
           </div>
 
-          {/* Actionable Recommendations Panel */}
           <div style={{ background: "#F4F9F6", borderRadius: 16, border: "1px solid #D1E8DB", padding: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
               <span style={{ fontSize: 24 }}>💡</span>
@@ -300,33 +289,21 @@ export default function VisualizeArea() {
                 <div style={{ fontSize: 11, color: "#2E8540" }}>Targeted advice to improve the environment</div>
               </div>
             </div>
-
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {/* Personal */}
               <div style={{ background: "#fff", padding: "12px", borderRadius: 8, border: "1px solid #D1E8DB" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B3A", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                  🛡️ Personal Precautions
-                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B3A", marginBottom: 6 }}>🛡️ Personal Precautions</div>
                 <ul style={{ margin: 0, paddingLeft: 20, fontSize: 12, color: "#4B5563", lineHeight: 1.6 }}>
                   {analyzedArea.recommendations.personal.map((rec, i) => <li key={i}>{rec}</li>)}
                 </ul>
               </div>
-
-              {/* Society */}
               <div style={{ background: "#fff", padding: "12px", borderRadius: 8, border: "1px solid #D1E8DB" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B3A", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                  🤝 As a Society / Community
-                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B3A", marginBottom: 6 }}>🤝 As a Society / Community</div>
                 <ul style={{ margin: 0, paddingLeft: 20, fontSize: 12, color: "#4B5563", lineHeight: 1.6 }}>
                   {analyzedArea.recommendations.society.map((rec, i) => <li key={i}>{rec}</li>)}
                 </ul>
               </div>
-
-              {/* Government */}
               <div style={{ background: "#fff", padding: "12px", borderRadius: 8, border: "1px solid #D1E8DB" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B3A", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                  🏛️ Government Intervention
-                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1C2B3A", marginBottom: 6 }}>🏛️ Government Intervention</div>
                 <ul style={{ margin: 0, paddingLeft: 20, fontSize: 12, color: "#4B5563", lineHeight: 1.6 }}>
                   {analyzedArea.recommendations.gov.map((rec, i) => <li key={i}>{rec}</li>)}
                 </ul>
@@ -338,6 +315,59 @@ export default function VisualizeArea() {
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", opacity: 0.5 }}>
           <div style={{ fontSize: 48, marginBottom: 10 }}>🕸️</div>
           <div style={{ fontSize: 14, fontWeight: 600 }}>Enter a neighborhood to visualize</div>
+        </div>
+      )}
+
+      <div style={{ marginTop: 24, textAlign: "center", paddingBottom: 20 }}>
+        <button
+          onClick={() => setShowModal(true)}
+          style={{ width: "100%", padding: "14px", background: "#fff", color: "#1A3C5E", border: "2px solid #1A3C5E", borderRadius: 12, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+        >
+          📊 Complete Analysis
+        </button>
+      </div>
+
+      {showModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.7)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+          <div style={{ background: "#fff", width: "100%", maxWidth: 600, maxHeight: "90vh", borderRadius: 20, overflowY: "auto", position: "relative", padding: "30px 20px" }}>
+            <button onClick={() => setShowModal(false)} style={{ position: "absolute", top: 15, right: 15, background: "none", border: "none", fontSize: 24, cursor: "pointer" }}>✕</button>
+            <h2 style={{ textAlign: "center", color: "#1A3C5E", marginBottom: 20 }}>City-Wide AQI Analysis</h2>
+            <div style={{ marginBottom: 30 }}>
+              <h4 style={{ color: "#2D9B6F", marginBottom: 10 }}>🌟 Top 5 Cleanest Areas (Lowest AQI)</h4>
+              <div style={{ width: "100%", height: 200 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={cityAnalysis.best} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="area" tick={{ fontSize: 10 }} />
+                    <YAxis yAxisId="left" tick={{ fontSize: 10 }} />
+                    <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
+                    <Tooltip />
+                    <Legend verticalAlign="top" height={36}/>
+                    <Line yAxisId="left" type="monotone" dataKey="aqi" stroke="#2D9B6F" name="AQI Level" strokeWidth={2} />
+                    <Line yAxisId="right" type="monotone" dataKey="housingCount" stroke="#4A7CAE" name="Housing Count" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <div>
+              <h4 style={{ color: "#C94040", marginBottom: 10 }}>⚠️ Top 5 Most Polluted Areas (Highest AQI)</h4>
+              <div style={{ width: "100%", height: 200 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={cityAnalysis.worst} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="area" tick={{ fontSize: 10 }} />
+                    <YAxis yAxisId="left" tick={{ fontSize: 10 }} />
+                    <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
+                    <Tooltip />
+                    <Legend verticalAlign="top" height={36}/>
+                    <Line yAxisId="left" type="monotone" dataKey="aqi" stroke="#C94040" name="AQI Level" strokeWidth={2} />
+                    <Line yAxisId="right" type="monotone" dataKey="housingCount" stroke="#4A7CAE" name="Housing Count" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            <button onClick={() => setShowModal(false)} style={{ width: "100%", marginTop: 25, padding: "12px", background: "#1A3C5E", color: "#fff", border: "none", borderRadius: 10, fontWeight: 600, cursor: "pointer" }}>Close Analysis</button>
+          </div>
         </div>
       )}
     </div>

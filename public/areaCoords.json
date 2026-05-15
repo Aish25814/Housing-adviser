@@ -7,7 +7,6 @@
     "lat": 13.012022,
     "lng": 77.677782
   },
-  "1A Block Koramangala": null,
   "1st Block BEL Layout": {
     "lat": 13.070346,
     "lng": 77.555531
@@ -288,7 +287,6 @@
     "lat": 13.05699,
     "lng": 77.598109
   },
-  "Anand Nagar": null,
   "Anand nagar": {
     "lat": 13.034699,
     "lng": 77.594456
@@ -313,7 +311,6 @@
     "lat": 12.783655,
     "lng": 77.746141
   },
-  "Anekal - Hosur Road": null,
   "Anjana Nagar": {
     "lat": 13.025792,
     "lng": 77.603797
@@ -938,7 +935,6 @@
     "lat": 12.993486,
     "lng": 77.625108
   },
-  "Craig Park Layout": null,
   "Crimson Layout": {
     "lat": 12.979955,
     "lng": 77.710971
@@ -1099,17 +1095,6 @@
     "lat": 12.90401,
     "lng": 77.595556
   },
-  "Domlur": null,
-  "Domlur Layout": null,
-  "Dommasandra": null,
-  "Doopanahalli": null,
-  "Dooravani Nagar": null,
-  "Double Road": null,
-  "Duvasapalya": null,
-  "Dwaraka Nagar": null,
-  "Dwarka Nagar": null,
-  "ECC Road, Whitefield,": null,
-  "EPIP Zone": null,
   "Ejipura": {
     "lat": 12.945245,
     "lng": 77.627478
@@ -2475,12 +2460,12 @@
     "lng": 77.652778
   },
   "Off Sarjapur Road,": {
-    "lat": 12.909843,
-    "lng": 77.687839
+    "lat": 12.895,
+    "lng": 77.75
   },
   "Off Sarjapur road,": {
-    "lat": 12.909843,
-    "lng": 77.687839
+    "lat": 12.895,
+    "lng": 77.75
   },
   "Okalipura": {
     "lat": 12.982534,
@@ -2907,16 +2892,16 @@
     "lng": 77.578875
   },
   "Sarjapur": {
-    "lat": 12.911623,
-    "lng": 77.638862
+    "lat": 12.87,
+    "lng": 77.78
   },
   "Sarjapur  Road": {
-    "lat": 12.924488,
-    "lng": 77.645142
+    "lat": 12.89,
+    "lng": 77.76
   },
   "Sarjapur Road,": {
-    "lat": 12.924488,
-    "lng": 77.645142
+    "lat": 12.89,
+    "lng": 77.76
   },
   "Sarvabhouma Nagar": {
     "lat": 12.912407,
@@ -3629,5 +3614,65 @@
   "whitefiled": {
     "lat": 13.031844,
     "lng": 77.761878
+  },
+  "Domlur": {
+    "lat": 12.9608,
+    "lng": 77.6387
+  },
+  "Domlur Layout": {
+    "lat": 12.96,
+    "lng": 77.64
+  },
+  "Anand Nagar": {
+    "lat": 12.99,
+    "lng": 77.57
+  },
+  "Dommasandra": {
+    "lat": 12.86,
+    "lng": 77.75
+  },
+  "Doopanahalli": {
+    "lat": 12.97,
+    "lng": 77.65
+  },
+  "Dooravani Nagar": {
+    "lat": 13.0,
+    "lng": 77.67
+  },
+  "Double Road": {
+    "lat": 12.96,
+    "lng": 77.59
+  },
+  "Duvasapalya": {
+    "lat": 12.92,
+    "lng": 77.61
+  },
+  "Dwaraka Nagar": {
+    "lat": 12.97,
+    "lng": 77.55
+  },
+  "Dwarka Nagar": {
+    "lat": 12.97,
+    "lng": 77.55
+  },
+  "ECC Road, Whitefield,": {
+    "lat": 12.98,
+    "lng": 77.75
+  },
+  "EPIP Zone": {
+    "lat": 12.98,
+    "lng": 77.74
+  },
+  "Craig Park Layout": {
+    "lat": 12.97,
+    "lng": 77.64
+  },
+  "Anekal - Hosur Road": {
+    "lat": 12.71,
+    "lng": 77.69
+  },
+  "1A Block Koramangala": {
+    "lat": 12.935,
+    "lng": 77.625
   }
 }

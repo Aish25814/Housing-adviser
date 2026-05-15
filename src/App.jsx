@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { COLORS, COMPANIES } from "./data/constants.js";
+import { COLORS, COMPANIES, getNearbyServices } from "./data/constants.js";
 import { useHouses } from "./data/houseData.js";
 import RAGChatBot from "./components/RAGChatBot.jsx";
 import RealMap from "./components/RealMap.jsx";
@@ -205,7 +205,7 @@ function HouseCard({ house, rank, onView, onReport }) {
 
         {/* price badge */}
         <div style={{ position: "absolute", bottom: 10, left: 10, background: "rgba(0,0,0,0.65)", color: "#fff", borderRadius: 8, padding: "4px 10px", fontSize: 14, fontWeight: 800 }}>
-          ₹{Math.round(house.price * 100)}K
+          ₹{house.price.toFixed(2)} Lakhs
         </div>
 
         {/* image nav dots */}
@@ -243,6 +243,23 @@ function HouseCard({ house, rank, onView, onReport }) {
           <div style={{ fontSize: 12, color: COLORS.muted }}>🏢 {house.dist} km to office</div>
           {house.soc ? <div style={{ fontSize: 12, color: COLORS.muted, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>🏘 {house.soc}</div> : null}
         </div>
+
+        {/* ── Amenities ── */}
+        {house.amenities && house.amenities.length > 0 && (
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: COLORS.muted, letterSpacing: 0.8, textTransform: "uppercase", marginBottom: 6 }}>Amenities</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+              {house.amenities.map(a => {
+                const icons = { AC: "❄️", Parking: "🅿️", Lift: "🛗", Security: "🔒", Gym: "🏋️", Garden: "🌿", "Swimming Pool": "🏊", "Power Backup": "⚡", "Water Supply": "🚰", Balcony: "🏡", CCTV: "📷" };
+                return (
+                  <span key={a} style={{ display: "flex", alignItems: "center", gap: 3, background: "#EEF7FF", border: "1px solid #B0D4F5", borderRadius: 6, padding: "3px 7px", fontSize: 11, color: "#1A5C9E", fontWeight: 600 }}>
+                    <span>{icons[a] || "✓"}</span>{a}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* ── Environment Quality Section ── */}
         <div style={{ background: "#F8F9FB", borderRadius: 10, padding: "10px 12px", marginBottom: 10, border: "1px solid #EEF1F6" }}>
@@ -467,22 +484,39 @@ export default function App() {
             {results.length > 0 && (
               <div style={{ padding: "8px 14px", background: "#fff", borderTop: `1px solid ${COLORS.border}`, overflowY: "auto", maxHeight: 200 }}>
                 <div style={{ fontSize: 12, fontWeight: 700, color: COLORS.primary, marginBottom: 6 }}>Top Matches</div>
-                {results.map((h, i) => (
-                  <div key={h.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", background: "#F4F6F9", borderRadius: 8, marginBottom: 6, fontSize: 12 }}>
-                    <span style={{ background: COLORS.primary, color: "#fff", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0 }}>{i + 1}</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, color: COLORS.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{h.loc}</div>
-                      <div style={{ color: COLORS.muted }}>₹{Math.round(h.price * 100)}K · {h.bhk} BHK · {h.dist} km to office</div>
+                {results.map((h, i) => {
+                  const svc = getNearbyServices(h.loc);
+                  return (
+                    <div key={h.id} style={{ background: "#F4F6F9", borderRadius: 10, marginBottom: 8, overflow: "hidden" }}>
+                      {/* main row */}
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", fontSize: 12 }}>
+                        <span style={{ background: COLORS.primary, color: "#fff", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, flexShrink: 0 }}>{i + 1}</span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontWeight: 600, color: COLORS.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{h.loc}</div>
+                          <div style={{ color: COLORS.muted }}>₹{h.price.toFixed(2)} Lakhs · {h.bhk} BHK · {h.dist} km to office</div>
+                        </div>
+                      </div>
+                      {/* services row */}
+                      <div style={{ display: "flex", gap: 0, borderTop: "1px solid #E8ECF2" }}>
+                        <div style={{ flex: 1, padding: "5px 10px", display: "flex", alignItems: "center", gap: 5, borderRight: "1px solid #E8ECF2" }}>
+                          <span style={{ fontSize: 12 }}>🏥</span>
+                          <span style={{ fontSize: 10, color: "#C94040", fontWeight: 600, lineHeight: 1.3 }}>{svc.hospital}</span>
+                        </div>
+                        <div style={{ flex: 1, padding: "5px 10px", display: "flex", alignItems: "center", gap: 5 }}>
+                          <span style={{ fontSize: 12 }}>🚔</span>
+                          <span style={{ fontSize: 10, color: "#1A5C9E", fontWeight: 600, lineHeight: 1.3 }}>{svc.police}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
         )}
 
         {tab === "visualize" && (
-          <VisualizeArea />
+          <VisualizeArea houses={houses} />
         )}
       </div>
       <style>{`@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }`}</style>
